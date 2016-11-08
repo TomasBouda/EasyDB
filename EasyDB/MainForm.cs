@@ -1,6 +1,7 @@
 ﻿using Database.Lib;
 using Database.Lib.Data;
 using Database.Lib.DBMS;
+using Database.Lib.Misc;
 using EasyDB.Properties;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace EasyDB
 {
@@ -26,6 +28,7 @@ namespace EasyDB
 			InitializeComponent();
 		}
 
+		#region Private methods
 		private void SearchInBackground()
 		{
 			if (!bw.IsBusy)
@@ -64,35 +67,77 @@ namespace EasyDB
 					}
 				}
 			}
+		} 
+
+		private void GridHighlithRow()
+		{
+			if (txtSearchQuery.Text != "")
+			{
+				foreach (DataGridViewRow row in gridColumns.Rows)
+				{
+					if (row.Cells[0].Value.ToString().ToLowerInvariant().Contains(txtSearchQuery.Text.ToLowerInvariant()))
+					{
+						row.DefaultCellStyle.BackColor = Color.Orange;
+					}
+				}
+			}
 		}
 
+		private void InitObjectsList()
+		{
+			var enums = EnumHelper<EDbObjects>.ToDictionary();
+			enums.Remove((int)EDbObjects.None);
+			enums.Remove((int)EDbObjects.All);
+			chListDbObjects.DataSource = new BindingSource(enums, null);
+			chListDbObjects.DisplayMember = "Value";
+			chListDbObjects.ValueMember = "Key";
+		}
+
+		#endregion
+
+		#region Event handlers
 		private void txtSearchQuery_TextChanged(object sender, EventArgs e)
 		{
 			_queryCache = txtSearchQuery.Text;
 			SearchInBackground();
 		}
 
+		private void bw_DoWork(object sender, DoWorkEventArgs e)
+		{
+			var selected = chListDbObjects.CheckedItems.Cast<KeyValuePair<int, string>>().Select(s => s.Key).Sum();
+			EDbObjects searchIn = selected == 0 ? EDbObjects.All : (EDbObjects)selected;
+
+			manager.SearchInDb(_queryCache, searchIn);
+		}
+
+		private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			listDbObjects.DataSource = manager.FoundDbObjects;
+			listDbObjects.DisplayMember = "Name";
+
+			lblObjectsCount.Text = manager.FoundDbObjects != null ? manager.FoundDbObjects.Count + " Objects" : "";
+
+			lblLoading.Visible = bw.IsBusy;
+			txtSearchQuery.Focus();
+
+			if (_queryCache != manager.SearchQuery)
+			{
+				SearchInBackground();
+			}
+		}
+
 		private void listDbObjects_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			var dbObject = listDbObjects.SelectedItem as IDbObject<MSSQL>;
 
-			if(dbObject is Table<MSSQL>)
+			if (dbObject is Table<MSSQL>)
 			{
 				gridColumns.DataSource = ((Table<MSSQL>)dbObject).Columns?.Tables[0];
 				tabControl.SelectedTab = tabControl.TabPages[0];
 
-				if(txtSearchQuery.Text != "")
-				{
-					foreach (DataGridViewRow row in gridColumns.Rows)
-					{
-						if (row.Cells[0].Value.ToString().ToLowerInvariant().Contains(txtSearchQuery.Text.ToLowerInvariant()))
-						{
-							row.DefaultCellStyle.BackColor = Color.Orange;
-						}
-					}
-				}
+				GridHighlithRow();
 			}
-			if(dbObject is View<MSSQL>)
+			if (dbObject is View<MSSQL>)
 			{
 				txtSqlScript.Text = ((View<MSSQL>)dbObject).Script;
 				tabControl.SelectedTab = tabControl.TabPages[1];
@@ -103,6 +148,13 @@ namespace EasyDB
 				tabControl.SelectedTab = tabControl.TabPages[1];
 			}
 		}
+
+		private void txtSqlScript_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
+		{
+			e.ChangedRange.SetSyntaxSql();
+			e.ChangedRange.HighlightText(txtSearchQuery.Text);
+		}
+
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
@@ -116,41 +168,32 @@ namespace EasyDB
 				lblStatus.Text = "Not Connected!";
 				lblLoading.Visible = false;
 			}
-		}
 
-		private void txtSqlScript_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
-		{
-			e.ChangedRange.SetSyntaxSql();
+			InitObjectsList();
 
-			e.ChangedRange.ClearStyle(Syntax.Highlight);
-
-			e.ChangedRange.SetStyle(Syntax.Highlight, txtSearchQuery.Text, RegexOptions.IgnoreCase | RegexOptions.Singleline);
-		}
-
-		private void bw_DoWork(object sender, DoWorkEventArgs e)
-		{
-			manager.SearchInDb(_queryCache);
-		}
-
-		private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-		{
-			listDbObjects.DataSource = manager.DbObjects;
-			listDbObjects.DisplayMember = "Name";
-
-			lblObjectsCount.Text = manager.DbObjects != null ? manager.DbObjects.Count + " Objects" : "";
-
-			lblLoading.Visible = bw.IsBusy;
 			txtSearchQuery.Focus();
-
-			if(_queryCache != manager.SearchQuery)
-			{
-				SearchInBackground();
-			}
 		}
 
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			manager?.Dispose();
+		}
+		
 		private void setConnectionToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SetConnection();
 		}
+
+		private void btnSearch_Click(object sender, EventArgs e)
+		{
+			SearchInBackground();
+		}
+
+		private void clearCacheToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			manager?.ClearCache();
+		}
+		
+		#endregion
 	}
 }
