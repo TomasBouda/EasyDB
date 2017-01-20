@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Database.Lib.DataProviders.ConnectionParams;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,6 +22,7 @@ namespace EasyDB
 		public string Database { get; set; }
 		public string Username { get; set; }
 		public string Password { get; set; }
+		public int IntegratedSecurity { get; set; }
 
 		private void btnSave_Click(object sender, EventArgs e)
 		{
@@ -28,6 +30,7 @@ namespace EasyDB
 			Database = txtDatabase.Text;
 			Username = txtUsername.Text;
 			Password = txtPassword.Text;
+			IntegratedSecurity = cbIntegratedSec.SelectedIndex;
 
 			DialogResult = DialogResult.OK;
 			Close();
@@ -38,6 +41,19 @@ namespace EasyDB
 			txtServer.Text = Server;
 			txtDatabase.Text = Database;
 			txtUsername.Text = Username;
+
+			var integSec = Enum.GetValues(typeof(EIntegratedSecurity))
+			   .Cast<EIntegratedSecurity>()
+			   .Distinct()
+			   .ToDictionary(t => (int)t, t => t.ToString());
+
+			cbIntegratedSec.Items.Clear();
+			foreach(var sec in integSec)
+			{
+				cbIntegratedSec.Items.Add(sec.Value);
+			}
+			
+			cbIntegratedSec.SelectedIndex = IntegratedSecurity < cbIntegratedSec.Items.Count ? IntegratedSecurity : 0;
 		}
 	}
 }
