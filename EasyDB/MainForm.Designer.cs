@@ -31,14 +31,14 @@
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.listDbObjects = new System.Windows.Forms.ListBox();
+			this.cmsListObj = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.copyScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.gridColumns = new System.Windows.Forms.DataGridView();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.txtSqlScript = new FastColoredTextBoxNS.FastColoredTextBox();
-			this.listDbObjects = new System.Windows.Forms.ListBox();
-			this.cmsListObj = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.copyScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.txtSearchQuery = new System.Windows.Forms.TextBox();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.lblLoading = new System.Windows.Forms.ToolStripStatusLabel();
@@ -59,12 +59,12 @@
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.btnSearch = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1.SuspendLayout();
+			this.cmsListObj.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.gridColumns)).BeginInit();
 			this.tabPage2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtSqlScript)).BeginInit();
-			this.cmsListObj.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.panel1.SuspendLayout();
@@ -74,27 +74,54 @@
 			// tableLayoutPanel1
 			// 
 			this.tableLayoutPanel1.ColumnCount = 2;
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 220F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Controls.Add(this.tabControl, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this.listDbObjects, 0, 0);
+			this.tableLayoutPanel1.Controls.Add(this.tabControl, 1, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 65);
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 76);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 1;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(875, 446);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(875, 435);
 			this.tableLayoutPanel1.TabIndex = 0;
+			// 
+			// listDbObjects
+			// 
+			this.listDbObjects.ContextMenuStrip = this.cmsListObj;
+			this.listDbObjects.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.listDbObjects.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.listDbObjects.FormattingEnabled = true;
+			this.listDbObjects.ItemHeight = 18;
+			this.listDbObjects.Location = new System.Drawing.Point(3, 3);
+			this.listDbObjects.Name = "listDbObjects";
+			this.listDbObjects.Size = new System.Drawing.Size(214, 429);
+			this.listDbObjects.TabIndex = 1;
+			this.listDbObjects.SelectedIndexChanged += new System.EventHandler(this.listDbObjects_SelectedIndexChanged);
+			// 
+			// cmsListObj
+			// 
+			this.cmsListObj.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyScriptToolStripMenuItem});
+			this.cmsListObj.Name = "cmsListObj";
+			this.cmsListObj.Size = new System.Drawing.Size(135, 26);
+			// 
+			// copyScriptToolStripMenuItem
+			// 
+			this.copyScriptToolStripMenuItem.Name = "copyScriptToolStripMenuItem";
+			this.copyScriptToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.copyScriptToolStripMenuItem.Text = "Copy script";
+			this.copyScriptToolStripMenuItem.Click += new System.EventHandler(this.copyScriptToolStripMenuItem_Click);
 			// 
 			// tabControl
 			// 
 			this.tabControl.Controls.Add(this.tabPage1);
 			this.tabControl.Controls.Add(this.tabPage2);
 			this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabControl.Location = new System.Drawing.Point(203, 3);
+			this.tabControl.Location = new System.Drawing.Point(223, 3);
 			this.tabControl.Name = "tabControl";
 			this.tabControl.SelectedIndex = 0;
-			this.tabControl.Size = new System.Drawing.Size(669, 440);
+			this.tabControl.Size = new System.Drawing.Size(649, 429);
 			this.tabControl.TabIndex = 0;
 			// 
 			// tabPage1
@@ -103,7 +130,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(661, 414);
+			this.tabPage1.Size = new System.Drawing.Size(641, 403);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Columns";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -118,7 +145,7 @@
 			this.gridColumns.Location = new System.Drawing.Point(3, 3);
 			this.gridColumns.Name = "gridColumns";
 			this.gridColumns.ReadOnly = true;
-			this.gridColumns.Size = new System.Drawing.Size(655, 408);
+			this.gridColumns.Size = new System.Drawing.Size(635, 397);
 			this.gridColumns.TabIndex = 1;
 			// 
 			// tabPage2
@@ -127,7 +154,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(661, 414);
+			this.tabPage2.Size = new System.Drawing.Size(661, 403);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Sql";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -160,44 +187,18 @@
 			this.txtSqlScript.ReadOnly = true;
 			this.txtSqlScript.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
 			this.txtSqlScript.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("txtSqlScript.ServiceColors")));
-			this.txtSqlScript.Size = new System.Drawing.Size(655, 408);
+			this.txtSqlScript.Size = new System.Drawing.Size(655, 397);
 			this.txtSqlScript.TabIndex = 0;
 			this.txtSqlScript.Zoom = 100;
 			this.txtSqlScript.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.txtSqlScript_TextChanged);
 			// 
-			// listDbObjects
-			// 
-			this.listDbObjects.ContextMenuStrip = this.cmsListObj;
-			this.listDbObjects.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.listDbObjects.Font = new System.Drawing.Font("Corbel", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.listDbObjects.FormattingEnabled = true;
-			this.listDbObjects.ItemHeight = 14;
-			this.listDbObjects.Location = new System.Drawing.Point(3, 3);
-			this.listDbObjects.Name = "listDbObjects";
-			this.listDbObjects.Size = new System.Drawing.Size(194, 440);
-			this.listDbObjects.TabIndex = 1;
-			this.listDbObjects.SelectedIndexChanged += new System.EventHandler(this.listDbObjects_SelectedIndexChanged);
-			// 
-			// cmsListObj
-			// 
-			this.cmsListObj.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.copyScriptToolStripMenuItem});
-			this.cmsListObj.Name = "cmsListObj";
-			this.cmsListObj.Size = new System.Drawing.Size(135, 26);
-			// 
-			// copyScriptToolStripMenuItem
-			// 
-			this.copyScriptToolStripMenuItem.Name = "copyScriptToolStripMenuItem";
-			this.copyScriptToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-			this.copyScriptToolStripMenuItem.Text = "Copy script";
-			this.copyScriptToolStripMenuItem.Click += new System.EventHandler(this.copyScriptToolStripMenuItem_Click);
-			// 
 			// txtSearchQuery
 			// 
 			this.txtSearchQuery.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtSearchQuery.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.txtSearchQuery.Location = new System.Drawing.Point(3, 3);
 			this.txtSearchQuery.Name = "txtSearchQuery";
-			this.txtSearchQuery.Size = new System.Drawing.Size(844, 20);
+			this.txtSearchQuery.Size = new System.Drawing.Size(834, 26);
 			this.txtSearchQuery.TabIndex = 0;
 			this.txtSearchQuery.TextChanged += new System.EventHandler(this.txtSearchQuery_TextChanged);
 			this.txtSearchQuery.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearchQuery_KeyUp);
@@ -316,15 +317,17 @@
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel1.Location = new System.Drawing.Point(0, 24);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(875, 41);
+			this.panel1.Size = new System.Drawing.Size(875, 52);
 			this.panel1.TabIndex = 3;
 			// 
 			// chListDbObjects
 			// 
+			this.chListDbObjects.BackColor = System.Drawing.SystemColors.Control;
 			this.chListDbObjects.Dock = System.Windows.Forms.DockStyle.Top;
+			this.chListDbObjects.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.chListDbObjects.FormattingEnabled = true;
 			this.chListDbObjects.HorizontalScrollbar = true;
-			this.chListDbObjects.Location = new System.Drawing.Point(0, 25);
+			this.chListDbObjects.Location = new System.Drawing.Point(0, 31);
 			this.chListDbObjects.MultiColumn = true;
 			this.chListDbObjects.Name = "chListDbObjects";
 			this.chListDbObjects.Size = new System.Drawing.Size(875, 19);
@@ -334,7 +337,7 @@
 			// 
 			this.tableLayoutPanel2.ColumnCount = 2;
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 35F));
 			this.tableLayoutPanel2.Controls.Add(this.btnSearch, 1, 0);
 			this.tableLayoutPanel2.Controls.Add(this.txtSearchQuery, 0, 0);
 			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
@@ -342,16 +345,17 @@
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
 			this.tableLayoutPanel2.RowCount = 1;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(875, 25);
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(875, 31);
 			this.tableLayoutPanel2.TabIndex = 2;
 			// 
 			// btnSearch
 			// 
 			this.btnSearch.BackgroundImage = global::EasyDB.Properties.Resources.search_icon;
 			this.btnSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btnSearch.Location = new System.Drawing.Point(853, 3);
+			this.btnSearch.Location = new System.Drawing.Point(845, 4);
+			this.btnSearch.Margin = new System.Windows.Forms.Padding(5, 4, 3, 3);
 			this.btnSearch.Name = "btnSearch";
-			this.btnSearch.Size = new System.Drawing.Size(19, 19);
+			this.btnSearch.Size = new System.Drawing.Size(25, 24);
 			this.btnSearch.TabIndex = 1;
 			this.btnSearch.UseVisualStyleBackColor = true;
 			this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
@@ -373,12 +377,12 @@
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.tableLayoutPanel1.ResumeLayout(false);
+			this.cmsListObj.ResumeLayout(false);
 			this.tabControl.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.gridColumns)).EndInit();
 			this.tabPage2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.txtSqlScript)).EndInit();
-			this.cmsListObj.ResumeLayout(false);
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
 			this.menuStrip1.ResumeLayout(false);
