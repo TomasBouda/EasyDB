@@ -30,6 +30,7 @@ namespace EasyDB
 		public MainForm()
 		{
 			InitializeComponent();
+			//AcceptButton = btnSearch;
 		}
 
 		#region Private methods
@@ -40,7 +41,7 @@ namespace EasyDB
 			{
 				Console.WriteLine("SearchInBackground");
 				lblLoading.Visible = true;
-				listDbObjects.DataSource = null;
+				listDbObjects.Items.Clear();
 				gridColumns.DataSource = null;
 				txtSqlScript.Text = "";
 
@@ -155,7 +156,28 @@ namespace EasyDB
 				return;
 			}
 
-			listDbObjects.DataSource = results.FoundDbObjects;
+			foreach(var obj in results.FoundDbObjects)
+			{
+				var item = new ListViewItem();
+				item.Text = obj.ToString();
+				item.Tag = obj;
+				
+				if(obj is Table<MSSQL>)
+				{
+					item.ImageIndex = 0;
+				}
+				else if (obj is View<MSSQL>)
+				{
+					item.ImageIndex = 1;
+				}
+				else if (obj is StoredProcedure<MSSQL>)
+				{
+					item.ImageIndex = 2;
+				}
+
+				listDbObjects.Items.Add(item);
+			}
+			
 
 			lblObjectsCount.Text = results.FoundDbObjects != null ? results.FoundDbObjects.Count + " Objects" : "";
 
@@ -173,7 +195,7 @@ namespace EasyDB
 			gridColumns.DataSource = null;
 			txtSqlScript.Text = "";
 
-			var dbObject = listDbObjects.SelectedItem as IDbObject<MSSQL>;
+			var dbObject = listDbObjects.FocusedItem?.Tag as IDbObject<MSSQL>;
 
 			if (dbObject is Table<MSSQL>)
 			{
@@ -245,9 +267,12 @@ namespace EasyDB
 			bw.CancelAsync();
 			//manager?.Dispose();
 
-			Settings.Default.MainWindowWidth = Width;
-			Settings.Default.MainWindowHeight = Height;
-			Settings.Default.Save();
+			if(WindowState != FormWindowState.Maximized)
+			{
+				Settings.Default.MainWindowWidth = Width;
+				Settings.Default.MainWindowHeight = Height;
+				Settings.Default.Save();
+			}
 		}
 		
 		private void setConnectionToolStripMenuItem_Click(object sender, EventArgs e)
@@ -267,9 +292,9 @@ namespace EasyDB
 
 		private void copyScriptToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (listDbObjects.SelectedIndex != 0)
+			if (listDbObjects.FocusedItem?.Tag != null)
 			{
-				var dbObject = listDbObjects.SelectedItem as DbObject<MSSQL>;
+				var dbObject = listDbObjects.FocusedItem.Tag as DbObject<MSSQL>;
 
 				if (dbObject is View<MSSQL>)
 				{
@@ -287,6 +312,8 @@ namespace EasyDB
 			if (e.KeyCode == Keys.Enter)
 			{
 				SearchInBackground();
+				e.Handled = true;
+				e.SuppressKeyPress = true;
 			}
 		}
 
