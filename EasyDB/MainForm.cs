@@ -23,7 +23,7 @@ namespace EasyDB
 {
 	public partial class MainForm : Form
 	{
-		public DatabaseManager<MSSQL> manager;
+		public DataProvider DataProvider { get; set; } = new DataProvider();
 
 		private string _queryCache = "";
 
@@ -60,8 +60,10 @@ namespace EasyDB
 
 				if (connDialog.ShowDialog() == DialogResult.OK)
 				{
-					manager = new DatabaseManager<MSSQL>();
-					var connRes = manager.Connect(new MSSQLConnectionParams()
+					//DataProvider.ActiveProvider = new DatabaseDataProvider.ActiveProvider<MSSQL>();
+					//var connRes = DataProvider.ActiveProvider.Connect();
+
+					var connRes = DataProvider.AddMSSqlManager("default", new MSSQLConnectionParams()
 					{
 						Server = connDialog.Server,
 						Database = connDialog.Database,
@@ -69,8 +71,9 @@ namespace EasyDB
 						Password = connDialog.Password,
 						SetIntegratedSecurity = (EIntegratedSecurity)connDialog.IntegratedSecurity
 					});
+					DataProvider.SetActiveManager("default");
 
-					if (connRes.Success && manager.DB.IsConnected)
+					if (connRes.Success && DataProvider.ActiveManager.IsConnected)
 					{
 						Settings.Default.Server = connDialog.Server;
 						Settings.Default.Database = connDialog.Database;
@@ -79,7 +82,7 @@ namespace EasyDB
 						Settings.Default.IntegratedSecurity = connDialog.IntegratedSecurity;
 						Settings.Default.Save();
 
-						lblStatus.Text = $"Connected {manager.DB.Connection.ConnectionString}";
+						lblStatus.Text = $"Connected {DataProvider.ActiveManager.ConnectionString}";
 
 						SearchInBackground();
 					}
@@ -136,18 +139,18 @@ namespace EasyDB
 
 			try
 			{
-				e.Result = manager.SearchInDb(_queryCache, searchIn);
+				e.Result = DataProvider.ActiveManager.SearchInDb(_queryCache, searchIn);
 			}
 			catch(Exception ex)
 			{
-				e.Result = manager.SearchInDb(_queryCache, searchIn);
+				e.Result = DataProvider.ActiveManager.SearchInDb(_queryCache, searchIn);
 				Console.WriteLine(ex.Message);
 			}
 		}
 
 		private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			var results = e.Result as SearchResults<MSSQL>;
+			var results = e.Result as SearchResults;
 
 			if (results.Error)
 			{
@@ -162,29 +165,28 @@ namespace EasyDB
 				item.Text = obj.ToString();
 				item.Tag = obj;
 				
-				if(obj is Table<MSSQL>)
+				if(DataProvider.ActiveManager.IsTable(obj))
 				{
 					item.ImageIndex = 0;
 				}
-				else if (obj is View<MSSQL>)
+				if (DataProvider.ActiveManager.IsView(obj))
 				{
 					item.ImageIndex = 1;
 				}
-				else if (obj is StoredProcedure<MSSQL>)
+				if (DataProvider.ActiveManager.IsStoredProcedure(obj))
 				{
 					item.ImageIndex = 2;
 				}
 
 				listDbObjects.Items.Add(item);
 			}
-			
 
 			lblObjectsCount.Text = results.FoundDbObjects != null ? results.FoundDbObjects.Count + " Objects" : "";
 
 			lblLoading.Visible = bw.IsBusy;
 			txtSearchQuery.Focus();
 
-			if (_queryCache != manager.SearchQuery)
+			if (_queryCache != DataProvider.ActiveManager.SearchQuery)
 			{
 				SearchInBackground();
 			}
@@ -195,23 +197,23 @@ namespace EasyDB
 			gridColumns.DataSource = null;
 			txtSqlScript.Text = "";
 
-			var dbObject = listDbObjects.FocusedItem?.Tag as IDbObject<MSSQL>;
+			var dbObject = listDbObjects.FocusedItem?.Tag as IDbObject;
 
-			if (dbObject is Table<MSSQL>)
+			if (DataProvider.ActiveManager.IsTable(dbObject))
 			{
-				gridColumns.DataSource = ((Table<MSSQL>)dbObject).Columns?.Tables[0];
+				gridColumns.DataSource = DataProvider.ActiveManager.Table(dbObject).Columns?.Tables[0];
 				tabControl.SelectedTab = tabControl.TabPages[0];
 
 				GridHighlithRow();
 			}
-			if (dbObject is View<MSSQL>)
+			if (DataProvider.ActiveManager.IsView(dbObject))
 			{
-				txtSqlScript.Text = ((View<MSSQL>)dbObject).Script;
+				txtSqlScript.Text = DataProvider.ActiveManager.View(dbObject).Script;
 				tabControl.SelectedTab = tabControl.TabPages[1];
 			}
-			if (dbObject is StoredProcedure<MSSQL>)
+			if (DataProvider.ActiveManager.IsStoredProcedure(dbObject))
 			{
-				txtSqlScript.Text = ((StoredProcedure<MSSQL>)dbObject).Script;
+				txtSqlScript.Text = DataProvider.ActiveManager.StoredProcedure(dbObject).Script;
 				tabControl.SelectedTab = tabControl.TabPages[1];
 			}
 		}
@@ -236,8 +238,7 @@ namespace EasyDB
 
 			if (Settings.Default.Server != "" && Settings.Default.Database != "")
 			{
-				manager = new DatabaseManager<MSSQL>();
-				var connRes = manager.Connect(new MSSQLConnectionParams()
+				var connRes = DataProvider.AddMSSqlManager("default", new MSSQLConnectionParams()
 				{
 					Server = Settings.Default.Server,
 					Database = Settings.Default.Database,
@@ -246,9 +247,18 @@ namespace EasyDB
 					SetIntegratedSecurity = (EIntegratedSecurity)Settings.Default.IntegratedSecurity
 				});
 
-				if (connRes.Success && manager.DB.IsConnected)
+				connRes = DataProvider.AddMySqlManager("mysql", new MySqlConnectionParams()
 				{
-					lblStatus.Text = $"Connected {manager.DB.Connection.ConnectionString}";
+					Server = "127.0.0.1",
+					Database = "polepy",
+					Username = "root",
+					Password = null
+				});
+				DataProvider.SetActiveManager("mysql");
+
+				if (connRes.Success && DataProvider.ActiveManager.IsConnected)
+				{
+					lblStatus.Text = $"Connected {DataProvider.ActiveManager.ConnectionString}";
 					SearchInBackground();
 					return;
 				}
@@ -265,7 +275,7 @@ namespace EasyDB
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			bw.CancelAsync();
-			//manager?.Dispose();
+			//DataProvider.ActiveProvider?.Dispose();
 
 			if(WindowState != FormWindowState.Maximized)
 			{
@@ -287,22 +297,22 @@ namespace EasyDB
 
 		private void clearCacheToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			manager?.ClearCache();
+			DataProvider.ActiveManager?.ClearCache();
 		}
 
 		private void copyScriptToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (listDbObjects.FocusedItem?.Tag != null)
 			{
-				var dbObject = listDbObjects.FocusedItem.Tag as DbObject<MSSQL>;
+				var dbObject = listDbObjects.FocusedItem.Tag as IDbObject;
 
-				if (dbObject is View<MSSQL>)
+				if (DataProvider.ActiveManager.IsView(dbObject))
 				{
-					Clipboard.SetText(((View<MSSQL>)dbObject).Script);
+					Clipboard.SetText(DataProvider.ActiveManager.View(dbObject).Script);
 				}
-				if (dbObject is StoredProcedure<MSSQL>)
+				if (DataProvider.ActiveManager.IsStoredProcedure(dbObject))
 				{
-					Clipboard.SetText(((StoredProcedure<MSSQL>)dbObject).Script);
+					Clipboard.SetText(DataProvider.ActiveManager.StoredProcedure(dbObject).Script);
 				}
 			}
 		}
