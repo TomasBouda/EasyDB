@@ -25,7 +25,7 @@ namespace EasyDB
 	{
 		public DataProvider DataProvider { get; set; } = new DataProvider();
 
-		private string _queryCache = "";
+		private string _query = "";
 
 		public MainForm()
 		{
@@ -40,11 +40,13 @@ namespace EasyDB
 			if (!bw.IsBusy)
 			{
 				Console.WriteLine("SearchInBackground");
+
 				lblLoading.Visible = true;
 				listDbObjects.Items.Clear();
 				gridColumns.DataSource = null;
 				txtSqlScript.Text = "";
 
+				_query = txtSearchQuery.Text;
 				bw.RunWorkerAsync();
 			}
 		}
@@ -111,9 +113,16 @@ namespace EasyDB
 
 		private void InitObjectsList()
 		{
+			ColumnHeader header = new ColumnHeader();
+			header.Text = "Database Objects";
+			header.Name = "col1";
+			header.Width = listDbObjects.Width - 25;
+			listDbObjects.Columns.Add(header);
+
 			var enums = EnumHelper<EDbObjects>.ToDictionary();
 			enums.Remove((int)EDbObjects.None);
 			enums.Remove((int)EDbObjects.All);
+
 			chListDbObjects.DataSource = new BindingSource(enums, null);
 			chListDbObjects.DisplayMember = "Value";
 			chListDbObjects.ValueMember = "Key";
@@ -125,8 +134,7 @@ namespace EasyDB
 
 		private void txtSearchQuery_TextChanged(object sender, EventArgs e)
 		{
-			_queryCache = txtSearchQuery.Text;
-			SearchInBackground();
+			
 		}
 
 		private void bw_DoWork(object sender, DoWorkEventArgs e)
@@ -139,11 +147,10 @@ namespace EasyDB
 
 			try
 			{
-				e.Result = DataProvider.ActiveManager.SearchInDb(_queryCache, searchIn);
+				e.Result = DataProvider.ActiveManager.SearchInDb(_query, searchIn);
 			}
 			catch(Exception ex)
 			{
-				e.Result = DataProvider.ActiveManager.SearchInDb(_queryCache, searchIn);
 				Console.WriteLine(ex.Message);
 			}
 		}
@@ -185,11 +192,6 @@ namespace EasyDB
 
 			lblLoading.Visible = bw.IsBusy;
 			txtSearchQuery.Focus();
-
-			if (_queryCache != DataProvider.ActiveManager.SearchQuery)
-			{
-				SearchInBackground();
-			}
 		}
 
 		private void listDbObjects_SelectedIndexChanged(object sender, EventArgs e)
@@ -198,6 +200,8 @@ namespace EasyDB
 			txtSqlScript.Text = "";
 
 			var dbObject = listDbObjects.FocusedItem?.Tag as IDbObject;
+
+			txtSqlScript.Text = dbObject?.Script ?? "";
 
 			if (DataProvider.ActiveManager.IsTable(dbObject))
 			{
@@ -208,12 +212,10 @@ namespace EasyDB
 			}
 			if (DataProvider.ActiveManager.IsView(dbObject))
 			{
-				txtSqlScript.Text = DataProvider.ActiveManager.View(dbObject).Script;
 				tabControl.SelectedTab = tabControl.TabPages[1];
 			}
 			if (DataProvider.ActiveManager.IsStoredProcedure(dbObject))
 			{
-				txtSqlScript.Text = DataProvider.ActiveManager.StoredProcedure(dbObject).Script;
 				tabControl.SelectedTab = tabControl.TabPages[1];
 			}
 		}
@@ -250,11 +252,11 @@ namespace EasyDB
 				connRes = DataProvider.AddMySqlManager("mysql", new MySqlConnectionParams()
 				{
 					Server = "127.0.0.1",
-					Database = "polepy",
+					Database = "skype",
 					Username = "root",
 					Password = null
 				});
-				DataProvider.SetActiveManager("mysql");
+				DataProvider.SetActiveManager("default");
 
 				if (connRes.Success && DataProvider.ActiveManager.IsConnected)
 				{
@@ -321,9 +323,9 @@ namespace EasyDB
 		{
 			if (e.KeyCode == Keys.Enter)
 			{
-				SearchInBackground();
-				e.Handled = true;
 				e.SuppressKeyPress = true;
+				e.Handled = true;
+				SearchInBackground();
 			}
 		}
 
@@ -341,5 +343,11 @@ namespace EasyDB
 		}
 
 		#endregion
+
+		private void listDbObjects_Resize(object sender, EventArgs e)
+		{
+			if(listDbObjects.Columns.Count > 0)
+				listDbObjects.Columns[0].Width = listDbObjects.Width - 25;
+		}
 	}
 }

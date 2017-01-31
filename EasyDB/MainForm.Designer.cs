@@ -30,7 +30,6 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.gridColumns = new System.Windows.Forms.DataGridView();
@@ -59,7 +58,11 @@
 			this.chListDbObjects = new System.Windows.Forms.CheckedListBox();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.btnSearch = new System.Windows.Forms.Button();
-			this.tableLayoutPanel1.SuspendLayout();
+			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.dataGridView1 = new System.Windows.Forms.DataGridView();
+			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.btnFetchData = new System.Windows.Forms.Button();
 			this.tabControl.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.gridColumns)).BeginInit();
@@ -70,32 +73,24 @@
 			this.menuStrip1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+			this.splitContainer1.Panel1.SuspendLayout();
+			this.splitContainer1.Panel2.SuspendLayout();
+			this.splitContainer1.SuspendLayout();
+			this.tabPage3.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// tableLayoutPanel1
-			// 
-			this.tableLayoutPanel1.ColumnCount = 2;
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 220F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Controls.Add(this.tabControl, 1, 0);
-			this.tableLayoutPanel1.Controls.Add(this.listDbObjects, 0, 0);
-			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 76);
-			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 1;
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(868, 379);
-			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// tabControl
 			// 
 			this.tabControl.Controls.Add(this.tabPage1);
 			this.tabControl.Controls.Add(this.tabPage2);
+			this.tabControl.Controls.Add(this.tabPage3);
 			this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabControl.Location = new System.Drawing.Point(223, 3);
+			this.tabControl.Location = new System.Drawing.Point(0, 0);
 			this.tabControl.Name = "tabControl";
 			this.tabControl.SelectedIndex = 0;
-			this.tabControl.Size = new System.Drawing.Size(642, 373);
+			this.tabControl.Size = new System.Drawing.Size(603, 379);
 			this.tabControl.TabIndex = 0;
 			// 
 			// tabPage1
@@ -104,7 +99,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(634, 347);
+			this.tabPage1.Size = new System.Drawing.Size(595, 353);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Columns";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -119,7 +114,7 @@
 			this.gridColumns.Location = new System.Drawing.Point(3, 3);
 			this.gridColumns.Name = "gridColumns";
 			this.gridColumns.ReadOnly = true;
-			this.gridColumns.Size = new System.Drawing.Size(628, 341);
+			this.gridColumns.Size = new System.Drawing.Size(589, 347);
 			this.gridColumns.TabIndex = 1;
 			// 
 			// tabPage2
@@ -128,7 +123,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(634, 347);
+			this.tabPage2.Size = new System.Drawing.Size(595, 353);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Sql";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -146,7 +141,7 @@
         '\"',
         '\'',
         '\''};
-			this.txtSqlScript.AutoScrollMinSize = new System.Drawing.Size(2, 17);
+			this.txtSqlScript.AutoScrollMinSize = new System.Drawing.Size(27, 17);
 			this.txtSqlScript.BackBrush = null;
 			this.txtSqlScript.CharHeight = 17;
 			this.txtSqlScript.CharWidth = 8;
@@ -161,7 +156,7 @@
 			this.txtSqlScript.ReadOnly = true;
 			this.txtSqlScript.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
 			this.txtSqlScript.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("txtSqlScript.ServiceColors")));
-			this.txtSqlScript.Size = new System.Drawing.Size(628, 341);
+			this.txtSqlScript.Size = new System.Drawing.Size(589, 347);
 			this.txtSqlScript.TabIndex = 0;
 			this.txtSqlScript.Zoom = 100;
 			this.txtSqlScript.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.txtSqlScript_TextChanged);
@@ -169,17 +164,19 @@
 			// listDbObjects
 			// 
 			this.listDbObjects.ContextMenuStrip = this.cmsListObj;
+			this.listDbObjects.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.listDbObjects.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listDbObjects.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.listDbObjects.Location = new System.Drawing.Point(3, 3);
+			this.listDbObjects.Location = new System.Drawing.Point(0, 0);
 			this.listDbObjects.MultiSelect = false;
 			this.listDbObjects.Name = "listDbObjects";
-			this.listDbObjects.Size = new System.Drawing.Size(214, 373);
+			this.listDbObjects.Size = new System.Drawing.Size(261, 379);
 			this.listDbObjects.SmallImageList = this.imageList;
 			this.listDbObjects.TabIndex = 1;
 			this.listDbObjects.UseCompatibleStateImageBehavior = false;
-			this.listDbObjects.View = System.Windows.Forms.View.SmallIcon;
+			this.listDbObjects.View = System.Windows.Forms.View.Details;
 			this.listDbObjects.SelectedIndexChanged += new System.EventHandler(this.listDbObjects_SelectedIndexChanged);
+			this.listDbObjects.Resize += new System.EventHandler(this.listDbObjects_Resize);
 			// 
 			// cmsListObj
 			// 
@@ -371,12 +368,72 @@
 			this.btnSearch.UseVisualStyleBackColor = true;
 			this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
 			// 
+			// splitContainer1
+			// 
+			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer1.Location = new System.Drawing.Point(0, 76);
+			this.splitContainer1.Name = "splitContainer1";
+			// 
+			// splitContainer1.Panel1
+			// 
+			this.splitContainer1.Panel1.Controls.Add(this.listDbObjects);
+			this.splitContainer1.Panel1MinSize = 100;
+			// 
+			// splitContainer1.Panel2
+			// 
+			this.splitContainer1.Panel2.Controls.Add(this.tabControl);
+			this.splitContainer1.Panel2MinSize = 200;
+			this.splitContainer1.Size = new System.Drawing.Size(868, 379);
+			this.splitContainer1.SplitterDistance = 261;
+			this.splitContainer1.TabIndex = 4;
+			// 
+			// tabPage3
+			// 
+			this.tabPage3.Controls.Add(this.btnFetchData);
+			this.tabPage3.Controls.Add(this.textBox1);
+			this.tabPage3.Controls.Add(this.dataGridView1);
+			this.tabPage3.Location = new System.Drawing.Point(4, 22);
+			this.tabPage3.Name = "tabPage3";
+			this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage3.Size = new System.Drawing.Size(595, 353);
+			this.tabPage3.TabIndex = 2;
+			this.tabPage3.Text = "Data";
+			this.tabPage3.UseVisualStyleBackColor = true;
+			// 
+			// dataGridView1
+			// 
+			this.dataGridView1.AllowUserToAddRows = false;
+			this.dataGridView1.AllowUserToDeleteRows = false;
+			this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dataGridView1.Location = new System.Drawing.Point(3, 26);
+			this.dataGridView1.Name = "dataGridView1";
+			this.dataGridView1.ReadOnly = true;
+			this.dataGridView1.Size = new System.Drawing.Size(589, 324);
+			this.dataGridView1.TabIndex = 2;
+			// 
+			// textBox1
+			// 
+			this.textBox1.Location = new System.Drawing.Point(6, 6);
+			this.textBox1.Name = "textBox1";
+			this.textBox1.Size = new System.Drawing.Size(406, 20);
+			this.textBox1.TabIndex = 3;
+			// 
+			// btnFetchData
+			// 
+			this.btnFetchData.Location = new System.Drawing.Point(514, 3);
+			this.btnFetchData.Name = "btnFetchData";
+			this.btnFetchData.Size = new System.Drawing.Size(75, 23);
+			this.btnFetchData.TabIndex = 4;
+			this.btnFetchData.Text = "button1";
+			this.btnFetchData.UseVisualStyleBackColor = true;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(868, 477);
-			this.Controls.Add(this.tableLayoutPanel1);
+			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.menuStrip1);
@@ -387,7 +444,6 @@
 			this.Text = "EasyDB";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
-			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tabControl.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.gridColumns)).EndInit();
@@ -401,14 +457,19 @@
 			this.panel1.ResumeLayout(false);
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel2.PerformLayout();
+			this.splitContainer1.Panel1.ResumeLayout(false);
+			this.splitContainer1.Panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+			this.splitContainer1.ResumeLayout(false);
+			this.tabPage3.ResumeLayout(false);
+			this.tabPage3.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
 		}
 
 		#endregion
-
-		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.TextBox txtSearchQuery;
 		private System.Windows.Forms.TabControl tabControl;
 		private System.Windows.Forms.TabPage tabPage1;
@@ -437,6 +498,11 @@
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 		private System.Windows.Forms.ListView listDbObjects;
 		private System.Windows.Forms.ImageList imageList;
+		private System.Windows.Forms.SplitContainer splitContainer1;
+		private System.Windows.Forms.TabPage tabPage3;
+		private System.Windows.Forms.Button btnFetchData;
+		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.DataGridView dataGridView1;
 	}
 }
 
