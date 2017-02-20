@@ -24,8 +24,11 @@ namespace EasyDB
 	public partial class MainForm : Form
 	{
 		public DataProvider DataProvider { get; set; } = new DataProvider();
+		IDbObject _selectedObject;
 
 		private string _query = "";
+
+		private List<Button> CheckButtons = new List<Button>();
 
 		public MainForm()
 		{
@@ -123,9 +126,38 @@ namespace EasyDB
 			enums.Remove((int)EDbObjects.None);
 			enums.Remove((int)EDbObjects.All);
 
-			chListDbObjects.DataSource = new BindingSource(enums, null);
-			chListDbObjects.DisplayMember = "Value";
-			chListDbObjects.ValueMember = "Key";
+			int buttonLeftPos = 0;
+			foreach(var e in enums)
+			{
+				var checkButton = new Button();
+				var buttonData = new CheckButtonData() { Checked = false, Flag = e.Key, Name = e.Value };
+				checkButton.Text = e.Value;
+				checkButton.Left = buttonLeftPos;
+				checkButton.Width = 200;
+				buttonLeftPos += checkButton.Width;
+				checkButton.Click += (object sender, EventArgs evg) => 
+				{
+					var btn = sender as Button;
+					var data = btn.Tag as CheckButtonData;
+					data.Checked = !data.Checked;
+
+					if (data.Checked)
+						btn.BackColor = Color.Orange;
+					else
+						btn.BackColor = SystemColors.Control;
+
+					SearchInBackground();
+				};
+
+				checkButton.Tag = buttonData;
+
+				CheckButtons.Add(checkButton);
+				panelCheckButtons.Controls.Add(checkButton);
+			}
+
+			//chListDbObjects.DataSource = new BindingSource(enums, null);
+			//chListDbObjects.DisplayMember = "Value";
+			//chListDbObjects.ValueMember = "Key";
 		}
 
 		#endregion
@@ -139,7 +171,8 @@ namespace EasyDB
 
 		private void bw_DoWork(object sender, DoWorkEventArgs e)
 		{
-			var selected = chListDbObjects.CheckedItems.Cast<KeyValuePair<int, string>>().Select(s => s.Key).Sum();
+			//var selected = chListDbObjects.CheckedItems.Cast<KeyValuePair<int, string>>().Select(s => s.Key).Sum();
+			var selected = CheckButtons.Where(b => ((CheckButtonData)b.Tag).Checked).Select(s => ((CheckButtonData)s.Tag).Flag).Sum();
 			EDbObjects searchIn = selected == 0 ? EDbObjects.All : (EDbObjects)selected;
 
 			if (e == null)
@@ -197,24 +230,26 @@ namespace EasyDB
 		private void listDbObjects_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			gridColumns.DataSource = null;
+			gridData.DataSource = null;
 			txtSqlScript.Text = "";
 
-			var dbObject = listDbObjects.FocusedItem?.Tag as IDbObject;
+			_selectedObject = listDbObjects.FocusedItem?.Tag as IDbObject;
 
-			txtSqlScript.Text = dbObject?.Script ?? "";
 
-			if (DataProvider.ActiveManager.IsTable(dbObject))
+			txtSqlScript.Text = _selectedObject?.Script ?? "";
+
+			if (DataProvider.ActiveManager.IsTable(_selectedObject))
 			{
-				gridColumns.DataSource = DataProvider.ActiveManager.Table(dbObject).Columns?.Tables[0];
+				gridColumns.DataSource = DataProvider.ActiveManager.Table(_selectedObject).Columns?.Tables[0];
 				tabControl.SelectedTab = tabControl.TabPages[0];
 
 				GridHighlithRow();
 			}
-			if (DataProvider.ActiveManager.IsView(dbObject))
+			if (DataProvider.ActiveManager.IsView(_selectedObject))
 			{
 				tabControl.SelectedTab = tabControl.TabPages[1];
 			}
-			if (DataProvider.ActiveManager.IsStoredProcedure(dbObject))
+			if (DataProvider.ActiveManager.IsStoredProcedure(_selectedObject))
 			{
 				tabControl.SelectedTab = tabControl.TabPages[1];
 			}
@@ -249,13 +284,14 @@ namespace EasyDB
 					SetIntegratedSecurity = (EIntegratedSecurity)Settings.Default.IntegratedSecurity
 				});
 
-				connRes = DataProvider.AddMySqlManager("mysql", new MySqlConnectionParams()
-				{
-					Server = "127.0.0.1",
-					Database = "skype",
-					Username = "root",
-					Password = null
-				});
+				//connRes = DataProvider.AddMySqlManager("mysql", new MySqlConnectionParams()
+				//{
+				//	Server = "127.0.0.1",
+				//	Database = "skype",
+				//	Username = "root",
+				//	Password = null
+				//});
+
 				DataProvider.SetActiveManager("default");
 
 				if (connRes.Success && DataProvider.ActiveManager.IsConnected)
@@ -348,6 +384,67 @@ namespace EasyDB
 		{
 			if(listDbObjects.Columns.Count > 0)
 				listDbObjects.Columns[0].Width = listDbObjects.Width - 25;
+		}
+
+		private void gridData_MouseDown(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				ContextMenu m = new ContextMenu();
+
+				int currentMouseOverRow = gridData.HitTest(e.X, e.Y).ColumnIndex;
+
+				if (currentMouseOverRow >= 0)
+				{
+					var whereItem = new MenuItem("Where");
+					whereItem.Click += (object s, EventArgs evargs) => 
+					{
+						var columnName = gridData.Columns[currentMouseOverRow]?.Name;
+
+						using(QueryOptionsForm qoForm = new QueryOptionsForm() { ColumnName = columnName })
+						{
+							if(qoForm.ShowDialog() == DialogResult.OK)
+							{
+								if (DataProvider.ActiveManager.IsTable(_selectedObject))
+								{
+									gridData.DataSource = DataProvider.ActiveManager.Table(_selectedObject).Select(columnName + qoForm.Expresion)?.Tables[0];
+
+									var column = gridData.Columns[currentMouseOverRow];
+									column.Name += qoForm.Expresion;
+									column.Tag = qoForm.Expresion;
+								}
+							}
+						}
+					};
+
+					m.MenuItems.Add(whereItem);
+				}
+
+				m.Show(gridData, new Point(e.X, e.Y));
+
+			}
+		}
+
+		private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if(tabControl.SelectedTab.Name == "tabData")
+			{
+				if (DataProvider.ActiveManager.IsTable(_selectedObject))
+					gridData.DataSource = DataProvider.ActiveManager.Table(_selectedObject).Select()?.Tables[0];
+			}
+		}
+
+		private void uppercaseSQLToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			string sql = txtSqlScript.Text;
+			var keywords = Syntax.SQL_BLUE_KEYWORDS.Concat(Syntax.SQL_GRAY_KEYWORDS).Concat(Syntax.SQL_PURPLE_KEYWORDS);
+
+			foreach(var kw in keywords)
+			{
+				sql = Regex.Replace(sql, $@"\b({kw})\b", kw.ToUpper(), RegexOptions.IgnoreCase | RegexOptions.Singleline);
+			}
+
+			txtSqlScript.Text = sql;
 		}
 	}
 }

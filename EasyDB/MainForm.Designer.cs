@@ -31,10 +31,12 @@
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.tabControl = new System.Windows.Forms.TabControl();
-			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.tabCols = new System.Windows.Forms.TabPage();
 			this.gridColumns = new System.Windows.Forms.DataGridView();
-			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.tabSql = new System.Windows.Forms.TabPage();
 			this.txtSqlScript = new FastColoredTextBoxNS.FastColoredTextBox();
+			this.tabData = new System.Windows.Forms.TabPage();
+			this.gridData = new System.Windows.Forms.DataGridView();
 			this.listDbObjects = new System.Windows.Forms.ListView();
 			this.cmsListObj = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.copyScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,6 +50,8 @@
 			this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.bw = new System.ComponentModel.BackgroundWorker();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.uppercaseSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setConnectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,19 +59,17 @@
 			this.reportBugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.chListDbObjects = new System.Windows.Forms.CheckedListBox();
+			this.panelCheckButtons = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.btnSearch = new System.Windows.Forms.Button();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-			this.tabPage3 = new System.Windows.Forms.TabPage();
-			this.dataGridView1 = new System.Windows.Forms.DataGridView();
-			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.btnFetchData = new System.Windows.Forms.Button();
 			this.tabControl.SuspendLayout();
-			this.tabPage1.SuspendLayout();
+			this.tabCols.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.gridColumns)).BeginInit();
-			this.tabPage2.SuspendLayout();
+			this.tabSql.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtSqlScript)).BeginInit();
+			this.tabData.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.gridData)).BeginInit();
 			this.cmsListObj.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
@@ -77,32 +79,31 @@
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
-			this.tabPage3.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabControl
 			// 
-			this.tabControl.Controls.Add(this.tabPage1);
-			this.tabControl.Controls.Add(this.tabPage2);
-			this.tabControl.Controls.Add(this.tabPage3);
+			this.tabControl.Controls.Add(this.tabCols);
+			this.tabControl.Controls.Add(this.tabSql);
+			this.tabControl.Controls.Add(this.tabData);
 			this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl.Location = new System.Drawing.Point(0, 0);
 			this.tabControl.Name = "tabControl";
 			this.tabControl.SelectedIndex = 0;
-			this.tabControl.Size = new System.Drawing.Size(603, 379);
+			this.tabControl.Size = new System.Drawing.Size(603, 374);
 			this.tabControl.TabIndex = 0;
+			this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
 			// 
-			// tabPage1
+			// tabCols
 			// 
-			this.tabPage1.Controls.Add(this.gridColumns);
-			this.tabPage1.Location = new System.Drawing.Point(4, 22);
-			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(595, 353);
-			this.tabPage1.TabIndex = 0;
-			this.tabPage1.Text = "Columns";
-			this.tabPage1.UseVisualStyleBackColor = true;
+			this.tabCols.Controls.Add(this.gridColumns);
+			this.tabCols.Location = new System.Drawing.Point(4, 22);
+			this.tabCols.Name = "tabCols";
+			this.tabCols.Padding = new System.Windows.Forms.Padding(3);
+			this.tabCols.Size = new System.Drawing.Size(595, 348);
+			this.tabCols.TabIndex = 0;
+			this.tabCols.Text = "Columns";
+			this.tabCols.UseVisualStyleBackColor = true;
 			// 
 			// gridColumns
 			// 
@@ -114,19 +115,19 @@
 			this.gridColumns.Location = new System.Drawing.Point(3, 3);
 			this.gridColumns.Name = "gridColumns";
 			this.gridColumns.ReadOnly = true;
-			this.gridColumns.Size = new System.Drawing.Size(589, 347);
+			this.gridColumns.Size = new System.Drawing.Size(589, 342);
 			this.gridColumns.TabIndex = 1;
 			// 
-			// tabPage2
+			// tabSql
 			// 
-			this.tabPage2.Controls.Add(this.txtSqlScript);
-			this.tabPage2.Location = new System.Drawing.Point(4, 22);
-			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(595, 353);
-			this.tabPage2.TabIndex = 1;
-			this.tabPage2.Text = "Sql";
-			this.tabPage2.UseVisualStyleBackColor = true;
+			this.tabSql.Controls.Add(this.txtSqlScript);
+			this.tabSql.Location = new System.Drawing.Point(4, 22);
+			this.tabSql.Name = "tabSql";
+			this.tabSql.Padding = new System.Windows.Forms.Padding(3);
+			this.tabSql.Size = new System.Drawing.Size(595, 348);
+			this.tabSql.TabIndex = 1;
+			this.tabSql.Text = "Sql";
+			this.tabSql.UseVisualStyleBackColor = true;
 			// 
 			// txtSqlScript
 			// 
@@ -141,7 +142,7 @@
         '\"',
         '\'',
         '\''};
-			this.txtSqlScript.AutoScrollMinSize = new System.Drawing.Size(27, 17);
+			this.txtSqlScript.AutoScrollMinSize = new System.Drawing.Size(2, 17);
 			this.txtSqlScript.BackBrush = null;
 			this.txtSqlScript.CharHeight = 17;
 			this.txtSqlScript.CharWidth = 8;
@@ -153,13 +154,37 @@
 			this.txtSqlScript.Location = new System.Drawing.Point(3, 3);
 			this.txtSqlScript.Name = "txtSqlScript";
 			this.txtSqlScript.Paddings = new System.Windows.Forms.Padding(0);
-			this.txtSqlScript.ReadOnly = true;
 			this.txtSqlScript.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
 			this.txtSqlScript.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("txtSqlScript.ServiceColors")));
-			this.txtSqlScript.Size = new System.Drawing.Size(589, 347);
+			this.txtSqlScript.Size = new System.Drawing.Size(589, 342);
 			this.txtSqlScript.TabIndex = 0;
 			this.txtSqlScript.Zoom = 100;
 			this.txtSqlScript.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.txtSqlScript_TextChanged);
+			// 
+			// tabData
+			// 
+			this.tabData.Controls.Add(this.gridData);
+			this.tabData.Location = new System.Drawing.Point(4, 22);
+			this.tabData.Name = "tabData";
+			this.tabData.Padding = new System.Windows.Forms.Padding(3);
+			this.tabData.Size = new System.Drawing.Size(595, 348);
+			this.tabData.TabIndex = 2;
+			this.tabData.Text = "Data";
+			this.tabData.UseVisualStyleBackColor = true;
+			// 
+			// gridData
+			// 
+			this.gridData.AllowUserToAddRows = false;
+			this.gridData.AllowUserToDeleteRows = false;
+			this.gridData.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+			this.gridData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.gridData.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.gridData.Location = new System.Drawing.Point(3, 3);
+			this.gridData.Name = "gridData";
+			this.gridData.ReadOnly = true;
+			this.gridData.Size = new System.Drawing.Size(589, 342);
+			this.gridData.TabIndex = 2;
+			this.gridData.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridData_MouseDown);
 			// 
 			// listDbObjects
 			// 
@@ -170,7 +195,7 @@
 			this.listDbObjects.Location = new System.Drawing.Point(0, 0);
 			this.listDbObjects.MultiSelect = false;
 			this.listDbObjects.Name = "listDbObjects";
-			this.listDbObjects.Size = new System.Drawing.Size(261, 379);
+			this.listDbObjects.Size = new System.Drawing.Size(261, 374);
 			this.listDbObjects.SmallImageList = this.imageList;
 			this.listDbObjects.TabIndex = 1;
 			this.listDbObjects.UseCompatibleStateImageBehavior = false;
@@ -264,6 +289,7 @@
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editToolStripMenuItem,
             this.optionsToolStripMenuItem,
             this.helpToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -271,6 +297,21 @@
 			this.menuStrip1.Size = new System.Drawing.Size(868, 24);
 			this.menuStrip1.TabIndex = 2;
 			this.menuStrip1.Text = "menuStrip1";
+			// 
+			// editToolStripMenuItem
+			// 
+			this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.uppercaseSQLToolStripMenuItem});
+			this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+			this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+			this.editToolStripMenuItem.Text = "Edit";
+			// 
+			// uppercaseSQLToolStripMenuItem
+			// 
+			this.uppercaseSQLToolStripMenuItem.Name = "uppercaseSQLToolStripMenuItem";
+			this.uppercaseSQLToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+			this.uppercaseSQLToolStripMenuItem.Text = "Uppercase SQL";
+			this.uppercaseSQLToolStripMenuItem.Click += new System.EventHandler(this.uppercaseSQLToolStripMenuItem_Click);
 			// 
 			// optionsToolStripMenuItem
 			// 
@@ -320,26 +361,21 @@
 			// 
 			// panel1
 			// 
-			this.panel1.Controls.Add(this.chListDbObjects);
+			this.panel1.Controls.Add(this.panelCheckButtons);
 			this.panel1.Controls.Add(this.tableLayoutPanel2);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel1.Location = new System.Drawing.Point(0, 24);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(868, 52);
+			this.panel1.Size = new System.Drawing.Size(868, 57);
 			this.panel1.TabIndex = 3;
 			// 
-			// chListDbObjects
+			// panelCheckButtons
 			// 
-			this.chListDbObjects.BackColor = System.Drawing.SystemColors.Control;
-			this.chListDbObjects.Dock = System.Windows.Forms.DockStyle.Top;
-			this.chListDbObjects.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.chListDbObjects.FormattingEnabled = true;
-			this.chListDbObjects.HorizontalScrollbar = true;
-			this.chListDbObjects.Location = new System.Drawing.Point(0, 31);
-			this.chListDbObjects.MultiColumn = true;
-			this.chListDbObjects.Name = "chListDbObjects";
-			this.chListDbObjects.Size = new System.Drawing.Size(868, 19);
-			this.chListDbObjects.TabIndex = 1;
+			this.panelCheckButtons.Dock = System.Windows.Forms.DockStyle.Top;
+			this.panelCheckButtons.Location = new System.Drawing.Point(0, 31);
+			this.panelCheckButtons.Name = "panelCheckButtons";
+			this.panelCheckButtons.Size = new System.Drawing.Size(868, 25);
+			this.panelCheckButtons.TabIndex = 3;
 			// 
 			// tableLayoutPanel2
 			// 
@@ -371,7 +407,7 @@
 			// splitContainer1
 			// 
 			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer1.Location = new System.Drawing.Point(0, 76);
+			this.splitContainer1.Location = new System.Drawing.Point(0, 81);
 			this.splitContainer1.Name = "splitContainer1";
 			// 
 			// splitContainer1.Panel1
@@ -383,50 +419,9 @@
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.tabControl);
 			this.splitContainer1.Panel2MinSize = 200;
-			this.splitContainer1.Size = new System.Drawing.Size(868, 379);
+			this.splitContainer1.Size = new System.Drawing.Size(868, 374);
 			this.splitContainer1.SplitterDistance = 261;
 			this.splitContainer1.TabIndex = 4;
-			// 
-			// tabPage3
-			// 
-			this.tabPage3.Controls.Add(this.btnFetchData);
-			this.tabPage3.Controls.Add(this.textBox1);
-			this.tabPage3.Controls.Add(this.dataGridView1);
-			this.tabPage3.Location = new System.Drawing.Point(4, 22);
-			this.tabPage3.Name = "tabPage3";
-			this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage3.Size = new System.Drawing.Size(595, 353);
-			this.tabPage3.TabIndex = 2;
-			this.tabPage3.Text = "Data";
-			this.tabPage3.UseVisualStyleBackColor = true;
-			// 
-			// dataGridView1
-			// 
-			this.dataGridView1.AllowUserToAddRows = false;
-			this.dataGridView1.AllowUserToDeleteRows = false;
-			this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
-			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dataGridView1.Location = new System.Drawing.Point(3, 26);
-			this.dataGridView1.Name = "dataGridView1";
-			this.dataGridView1.ReadOnly = true;
-			this.dataGridView1.Size = new System.Drawing.Size(589, 324);
-			this.dataGridView1.TabIndex = 2;
-			// 
-			// textBox1
-			// 
-			this.textBox1.Location = new System.Drawing.Point(6, 6);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(406, 20);
-			this.textBox1.TabIndex = 3;
-			// 
-			// btnFetchData
-			// 
-			this.btnFetchData.Location = new System.Drawing.Point(514, 3);
-			this.btnFetchData.Name = "btnFetchData";
-			this.btnFetchData.Size = new System.Drawing.Size(75, 23);
-			this.btnFetchData.TabIndex = 4;
-			this.btnFetchData.Text = "button1";
-			this.btnFetchData.UseVisualStyleBackColor = true;
 			// 
 			// MainForm
 			// 
@@ -445,10 +440,12 @@
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.tabControl.ResumeLayout(false);
-			this.tabPage1.ResumeLayout(false);
+			this.tabCols.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.gridColumns)).EndInit();
-			this.tabPage2.ResumeLayout(false);
+			this.tabSql.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.txtSqlScript)).EndInit();
+			this.tabData.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.gridData)).EndInit();
 			this.cmsListObj.ResumeLayout(false);
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
@@ -461,9 +458,6 @@
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
-			this.tabPage3.ResumeLayout(false);
-			this.tabPage3.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -472,9 +466,9 @@
 		#endregion
 		private System.Windows.Forms.TextBox txtSearchQuery;
 		private System.Windows.Forms.TabControl tabControl;
-		private System.Windows.Forms.TabPage tabPage1;
+		private System.Windows.Forms.TabPage tabCols;
 		private System.Windows.Forms.DataGridView gridColumns;
-		private System.Windows.Forms.TabPage tabPage2;
+		private System.Windows.Forms.TabPage tabSql;
 		private FastColoredTextBoxNS.FastColoredTextBox txtSqlScript;
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.ToolStripStatusLabel lblObjectsCount;
@@ -486,7 +480,6 @@
 		private System.Windows.Forms.ToolStripStatusLabel lblStatus;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
 		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.CheckedListBox chListDbObjects;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
 		private System.Windows.Forms.Button btnSearch;
 		private System.Windows.Forms.ToolStripMenuItem clearCacheToolStripMenuItem;
@@ -499,10 +492,11 @@
 		private System.Windows.Forms.ListView listDbObjects;
 		private System.Windows.Forms.ImageList imageList;
 		private System.Windows.Forms.SplitContainer splitContainer1;
-		private System.Windows.Forms.TabPage tabPage3;
-		private System.Windows.Forms.Button btnFetchData;
-		private System.Windows.Forms.TextBox textBox1;
-		private System.Windows.Forms.DataGridView dataGridView1;
+		private System.Windows.Forms.TabPage tabData;
+		private System.Windows.Forms.DataGridView gridData;
+		private System.Windows.Forms.Panel panelCheckButtons;
+		private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem uppercaseSQLToolStripMenuItem;
 	}
 }
 
