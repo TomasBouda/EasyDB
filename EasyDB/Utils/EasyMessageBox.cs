@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyDB.Forms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,22 @@ namespace EasyDB.Utils
 {
 	public static class EasyMessageBox
 	{
-		public static void Error(string message)
+		public static DialogResult Error(string message)
 		{
-			MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			return MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
+
+		public static DialogResult Error(Exception ex)
+		{
+			return MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
+
+		public static DialogResult MessageWithAction(string title, string message, Action action, string actionButtonText, string okButtonText)
+		{
+			using(var form = new MessageForm(title, message, action, actionButtonText, okButtonText))
+			{
+				return form.ShowDialog();
+			}
 		}
 	}
 }

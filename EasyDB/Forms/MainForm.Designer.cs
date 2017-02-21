@@ -63,6 +63,7 @@
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.btnSearch = new System.Windows.Forms.Button();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.backupScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl.SuspendLayout();
 			this.tabCols.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.gridColumns)).BeginInit();
@@ -206,14 +207,15 @@
 			// cmsListObj
 			// 
 			this.cmsListObj.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.backupScriptToolStripMenuItem,
             this.copyScriptToolStripMenuItem});
 			this.cmsListObj.Name = "cmsListObj";
-			this.cmsListObj.Size = new System.Drawing.Size(135, 26);
+			this.cmsListObj.Size = new System.Drawing.Size(153, 70);
 			// 
 			// copyScriptToolStripMenuItem
 			// 
 			this.copyScriptToolStripMenuItem.Name = "copyScriptToolStripMenuItem";
-			this.copyScriptToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.copyScriptToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.copyScriptToolStripMenuItem.Text = "Copy script";
 			this.copyScriptToolStripMenuItem.Click += new System.EventHandler(this.copyScriptToolStripMenuItem_Click);
 			// 
@@ -423,6 +425,13 @@
 			this.splitContainer1.SplitterDistance = 261;
 			this.splitContainer1.TabIndex = 4;
 			// 
+			// backupScriptToolStripMenuItem
+			// 
+			this.backupScriptToolStripMenuItem.Name = "backupScriptToolStripMenuItem";
+			this.backupScriptToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.backupScriptToolStripMenuItem.Text = "Backup script";
+			this.backupScriptToolStripMenuItem.Click += new System.EventHandler(this.backupScriptToolStripMenuItem_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -497,6 +506,7 @@
 		private System.Windows.Forms.Panel panelCheckButtons;
 		private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem uppercaseSQLToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem backupScriptToolStripMenuItem;
 	}
 }
 

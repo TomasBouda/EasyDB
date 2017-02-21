@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -445,6 +446,33 @@ namespace EasyDB
 			}
 
 			txtSqlScript.Text = sql;
+		}
+
+		private void backupScriptToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (listDbObjects.FocusedItem?.Tag != null)
+			{
+				var dbObject = listDbObjects.FocusedItem.Tag as IDbObject;
+
+				if (DataProvider.ActiveManager.IsView(dbObject))
+				{
+					dbObject = DataProvider.ActiveManager.View(dbObject);
+				}
+				if (DataProvider.ActiveManager.IsStoredProcedure(dbObject))
+				{
+					dbObject = DataProvider.ActiveManager.StoredProcedure(dbObject);
+				}
+
+				string output;
+				if(FileHelper.BackupScript(dbObject.Name, dbObject.Script, out output))
+				{
+					EasyMessageBox.MessageWithAction("Script saved", $"Script saved successfully.\r\n{output}", () => Process.Start(output), "Open File", "OK");
+				}
+				else
+				{
+					EasyMessageBox.Error($"Error occured while saving file.\n{output}");
+				}
+			}
 		}
 	}
 }
