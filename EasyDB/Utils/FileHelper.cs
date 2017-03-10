@@ -9,21 +9,21 @@ namespace EasyDB.Utils
 {
 	public class FileHelper
 	{
-		public static bool BackupScript(string scriptName, string sqlScript, out string output)
+		public static bool BackupScript(string scriptName, string sqlScript, out Tuple<string, string> output)
 		{
 			string dirName = GetDirForToday();
-			output = $"{dirName}{scriptName}_{DateTime.Now.ToString("MMddyyyy_HHmmss")}.sql";
+			output = new Tuple<string, string>($"{dirName}{scriptName}_{DateTime.Now.ToString("MMddyyyy_HHmmss")}.sql", dirName);
 
 			try
 			{
-				File.WriteAllText(output, sqlScript, Encoding.UTF8);
+				File.WriteAllText(output.Item1, sqlScript, Encoding.UTF8);
 
 				return true;
 			}
 			catch(Exception ex)
 			{
 				Console.WriteLine(ex.Message);
-				output = ex.Message;
+				output = new Tuple<string, string>(ex.Message, ex.StackTrace);
 				return false;
 			}
 		}

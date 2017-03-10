@@ -13,33 +13,41 @@ namespace EasyDB.Forms
 	public partial class MessageForm : Form
 	{
 		public string Title { get; set; }
-		public string LabelMessage { get; set; }
+		public string Message { get; set; }
 		public string OkButtonText { get; set; }
-		public string ActionButtonText { get; set; }
+		public List<ActionButton> ActionButtons { get; set; }
 
-		public Action ButtonAction { get; set; }
-
-		public MessageForm(string title, string message, Action action, string actionButtonText, string okButtonText)
+		public MessageForm(string title, string message, string okButtonText, params ActionButton[] actionButtons)
 		{
 			InitializeComponent();
 
 			Text = Title = title;
-			LabelMessage = lblMessage.Text = message;
+			Message = lblMessage.Text = message;
 			OkButtonText = btnOk.Text = okButtonText;
-			ActionButtonText = btnAction.Text = actionButtonText;
-			ButtonAction = action;
+
+			ActionButtons = actionButtons.ToList();
+
+			int left = 0;
+			foreach(var btn in ActionButtons)
+			{
+				Action action = btn.Action;
+				btn.Action = () => 
+				{
+					DialogResult = DialogResult.Yes;
+					action();
+					Close();
+				};
+
+				var fBtn = btn.ToFormsButton(height: panelActionButtons.Height, left: left);
+				panelActionButtons.Controls.Add(fBtn);
+
+				left = fBtn.Width + 10;
+			}
 		}
 
 		private void btnOk_Click(object sender, EventArgs e)
 		{
 			DialogResult = DialogResult.OK;
-			Close();
-		}
-
-		private void btnAction_Click(object sender, EventArgs e)
-		{
-			DialogResult = DialogResult.Yes;
-			ButtonAction.Invoke();
 			Close();
 		}
 	}

@@ -30,13 +30,14 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MessageForm));
 			this.lblMessage = new System.Windows.Forms.Label();
-			this.btnAction = new System.Windows.Forms.Button();
 			this.btnOk = new System.Windows.Forms.Button();
+			this.panelActionButtons = new System.Windows.Forms.Panel();
 			this.SuspendLayout();
 			// 
 			// lblMessage
 			// 
 			this.lblMessage.BackColor = System.Drawing.Color.White;
+			this.lblMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.lblMessage.Location = new System.Drawing.Point(1, 0);
 			this.lblMessage.Margin = new System.Windows.Forms.Padding(0);
 			this.lblMessage.Name = "lblMessage";
@@ -45,19 +46,9 @@
 			this.lblMessage.TabIndex = 0;
 			this.lblMessage.Text = "label1";
 			// 
-			// btnAction
-			// 
-			this.btnAction.Location = new System.Drawing.Point(82, 74);
-			this.btnAction.Name = "btnAction";
-			this.btnAction.Size = new System.Drawing.Size(75, 33);
-			this.btnAction.TabIndex = 1;
-			this.btnAction.Text = "Open";
-			this.btnAction.UseVisualStyleBackColor = true;
-			this.btnAction.Click += new System.EventHandler(this.btnAction_Click);
-			// 
 			// btnOk
 			// 
-			this.btnOk.Location = new System.Drawing.Point(199, 74);
+			this.btnOk.Location = new System.Drawing.Point(270, 74);
 			this.btnOk.Name = "btnOk";
 			this.btnOk.Size = new System.Drawing.Size(75, 33);
 			this.btnOk.TabIndex = 2;
@@ -65,13 +56,20 @@
 			this.btnOk.UseVisualStyleBackColor = true;
 			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
 			// 
+			// panelActionButtons
+			// 
+			this.panelActionButtons.Location = new System.Drawing.Point(14, 74);
+			this.panelActionButtons.Name = "panelActionButtons";
+			this.panelActionButtons.Size = new System.Drawing.Size(256, 32);
+			this.panelActionButtons.TabIndex = 3;
+			// 
 			// MessageForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(357, 117);
+			this.Controls.Add(this.panelActionButtons);
 			this.Controls.Add(this.btnOk);
-			this.Controls.Add(this.btnAction);
 			this.Controls.Add(this.lblMessage);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -87,7 +85,7 @@
 		#endregion
 
 		private System.Windows.Forms.Label lblMessage;
-		private System.Windows.Forms.Button btnAction;
 		private System.Windows.Forms.Button btnOk;
+		private System.Windows.Forms.Panel panelActionButtons;
 	}
 }

@@ -4,6 +4,7 @@ using Database.Lib.DataProviders;
 using Database.Lib.DataProviders.ConnectionParams;
 using Database.Lib.Misc;
 using Database.Lib.Search;
+using EasyDB.Forms;
 using EasyDB.Properties;
 using EasyDB.Utils;
 using System;
@@ -66,16 +67,13 @@ namespace EasyDB
 
 				if (connDialog.ShowDialog() == DialogResult.OK)
 				{
-					//DataProvider.ActiveProvider = new DatabaseDataProvider.ActiveProvider<MSSQL>();
-					//var connRes = DataProvider.ActiveProvider.Connect();
-
 					var connRes = DataProvider.AddMSSqlManager("default", new MSSQLConnectionParams()
 					{
 						Server = connDialog.Server,
 						Database = connDialog.Database,
 						Username = connDialog.Username,
 						Password = connDialog.Password,
-						SetIntegratedSecurity = (EIntegratedSecurity)connDialog.IntegratedSecurity
+						SetIntegratedSecurity = connDialog.IntegratedSecurity
 					});
 					DataProvider.SetActiveManager("default");
 
@@ -161,6 +159,61 @@ namespace EasyDB
 			//chListDbObjects.ValueMember = "Key";
 		}
 
+		private void ChangeSqlScriptCase(bool upper = true)
+		{
+			string sql = txtSqlScript.Text;
+			var keywords = Syntax.SQL_BLUE_KEYWORDS.Concat(Syntax.SQL_GRAY_KEYWORDS).Concat(Syntax.SQL_PURPLE_KEYWORDS);
+
+			foreach (var kw in keywords)
+			{
+				sql = Regex.Replace(sql, $@"\b({kw})\b", upper ? kw.ToUpper() : kw.ToLower(), RegexOptions.IgnoreCase | RegexOptions.Singleline);
+			}
+
+			txtSqlScript.Text = sql;
+		}
+
+		private void BackupSelectedScript()
+		{
+			if (listDbObjects.FocusedItem?.Tag != null)
+			{
+				var dbObject = listDbObjects.FocusedItem.Tag as IDbObject;
+
+				if (DataProvider.ActiveManager.IsView(dbObject))
+				{
+					dbObject = DataProvider.ActiveManager.View(dbObject);
+				}
+				else if (DataProvider.ActiveManager.IsStoredProcedure(dbObject))
+				{
+					dbObject = DataProvider.ActiveManager.StoredProcedure(dbObject);
+				}
+				else return;
+
+				Tuple<string, string> output;
+				if (FileHelper.BackupScript(dbObject.Name, dbObject.Script, out output))
+				{
+					EasyMessageBox.MessageWithActions(
+						"Script saved",
+						$"Script saved successfully.\r\n{output.Item1}",
+						"OK",
+						new ActionButton(() => Process.Start(output.Item1), "Open File"),
+						new ActionButton(() => Process.Start(output.Item2), "Open Dir")
+						);
+				}
+				else
+				{
+					EasyMessageBox.Error($"Error occured while saving file.\n{output.Item1}");
+				}
+			}
+		}
+
+		private SqlExForm ShowSqlExecutor(string script = "")
+		{
+			var sqlEx = new SqlExForm(DataProvider, script);
+			sqlEx.Show();
+
+			return sqlEx;
+		}
+
 		#endregion
 
 		#region Event handlers
@@ -231,7 +284,6 @@ namespace EasyDB
 		private void listDbObjects_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			gridColumns.DataSource = null;
-			gridData.DataSource = null;
 			txtSqlScript.Text = "";
 
 			_selectedObject = listDbObjects.FocusedItem?.Tag as IDbObject;
@@ -282,7 +334,7 @@ namespace EasyDB
 					Database = Settings.Default.Database,
 					Username = Settings.Default.Username,
 					Password = Settings.Default.Password,
-					SetIntegratedSecurity = (EIntegratedSecurity)Settings.Default.IntegratedSecurity
+					SetIntegratedSecurity = Settings.Default.IntegratedSecurity
 				});
 
 				//connRes = DataProvider.AddMySqlManager("mysql", new MySqlConnectionParams()
@@ -387,68 +439,21 @@ namespace EasyDB
 				listDbObjects.Columns[0].Width = listDbObjects.Width - 25;
 		}
 
-		private void gridData_MouseDown(object sender, MouseEventArgs e)
-		{
-			if (e.Button == MouseButtons.Right)
-			{
-				ContextMenu m = new ContextMenu();
-
-				int currentMouseOverRow = gridData.HitTest(e.X, e.Y).ColumnIndex;
-
-				if (currentMouseOverRow >= 0)
-				{
-					var whereItem = new MenuItem("Where");
-					whereItem.Click += (object s, EventArgs evargs) => 
-					{
-						var columnName = gridData.Columns[currentMouseOverRow]?.Name;
-
-						using(QueryOptionsForm qoForm = new QueryOptionsForm() { ColumnName = columnName })
-						{
-							if(qoForm.ShowDialog() == DialogResult.OK)
-							{
-								if (DataProvider.ActiveManager.IsTable(_selectedObject))
-								{
-									gridData.DataSource = DataProvider.ActiveManager.Table(_selectedObject).Select(columnName + qoForm.Expresion)?.Tables[0];
-
-									var column = gridData.Columns[currentMouseOverRow];
-									column.Name += qoForm.Expresion;
-									column.Tag = qoForm.Expresion;
-								}
-							}
-						}
-					};
-
-					m.MenuItems.Add(whereItem);
-				}
-
-				m.Show(gridData, new Point(e.X, e.Y));
-
-			}
-		}
-
 		private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if(tabControl.SelectedTab.Name == "tabData")
-			{
-				if (DataProvider.ActiveManager.IsTable(_selectedObject))
-					gridData.DataSource = DataProvider.ActiveManager.Table(_selectedObject).Select()?.Tables[0];
-			}
+			
 		}
-
 		private void uppercaseSQLToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			string sql = txtSqlScript.Text;
-			var keywords = Syntax.SQL_BLUE_KEYWORDS.Concat(Syntax.SQL_GRAY_KEYWORDS).Concat(Syntax.SQL_PURPLE_KEYWORDS);
-
-			foreach(var kw in keywords)
-			{
-				sql = Regex.Replace(sql, $@"\b({kw})\b", kw.ToUpper(), RegexOptions.IgnoreCase | RegexOptions.Singleline);
-			}
-
-			txtSqlScript.Text = sql;
+			ChangeSqlScriptCase();
 		}
 
 		private void backupScriptToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			BackupSelectedScript();
+		}
+
+		private void copySelectStatementToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (listDbObjects.FocusedItem?.Tag != null)
 			{
@@ -456,23 +461,43 @@ namespace EasyDB
 
 				if (DataProvider.ActiveManager.IsView(dbObject))
 				{
-					dbObject = DataProvider.ActiveManager.View(dbObject);
+					Clipboard.SetText($"SELECT * FROM {DataProvider.ActiveManager.View(dbObject).Schema}.{DataProvider.ActiveManager.View(dbObject).Name}");
+				}
+				if (DataProvider.ActiveManager.IsTable(dbObject))
+				{
+					Clipboard.SetText($"SELECT * FROM {DataProvider.ActiveManager.Table(dbObject).Schema}.{DataProvider.ActiveManager.Table(dbObject).Name}");
+				}
+			}
+		}
+
+		private void lowercaseSQLToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ChangeSqlScriptCase(false);
+		}
+
+		private void backupScriptToolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+			BackupSelectedScript();
+		}
+
+		private void sqlExecutorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			string script = "";
+			if (listDbObjects.FocusedItem?.Tag != null)
+			{
+				var dbObject = listDbObjects.FocusedItem.Tag as IDbObject;
+
+				if (DataProvider.ActiveManager.IsView(dbObject))
+				{
+					script = DataProvider.ActiveManager.View(dbObject).Script;
 				}
 				if (DataProvider.ActiveManager.IsStoredProcedure(dbObject))
 				{
-					dbObject = DataProvider.ActiveManager.StoredProcedure(dbObject);
-				}
-
-				string output;
-				if(FileHelper.BackupScript(dbObject.Name, dbObject.Script, out output))
-				{
-					EasyMessageBox.MessageWithAction("Script saved", $"Script saved successfully.\r\n{output}", () => Process.Start(output), "Open File", "OK");
-				}
-				else
-				{
-					EasyMessageBox.Error($"Error occured while saving file.\n{output}");
+					script = DataProvider.ActiveManager.StoredProcedure(dbObject).Script;
 				}
 			}
+
+			ShowSqlExecutor(script);
 		}
 	}
 }

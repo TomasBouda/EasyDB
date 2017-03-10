@@ -22,7 +22,7 @@ namespace EasyDB
 		public string Database { get; set; }
 		public string Username { get; set; }
 		public string Password { get; set; }
-		public int IntegratedSecurity { get; set; }
+		public bool IntegratedSecurity { get; set; }
 
 		private void btnSave_Click(object sender, EventArgs e)
 		{
@@ -30,7 +30,7 @@ namespace EasyDB
 			Database = txtDatabase.Text;
 			Username = txtUsername.Text;
 			Password = txtPassword.Text;
-			IntegratedSecurity = cbIntegratedSec.SelectedIndex;
+			IntegratedSecurity = (int)(cbIntegratedSec.SelectedValue ?? 1) == 0 ? false : true;
 
 			DialogResult = DialogResult.OK;
 			Close();
@@ -42,18 +42,17 @@ namespace EasyDB
 			txtDatabase.Text = Database;
 			txtUsername.Text = Username;
 
-			var integSec = Enum.GetValues(typeof(EIntegratedSecurity))
-			   .Cast<EIntegratedSecurity>()
-			   .Distinct()
-			   .ToDictionary(t => (int)t, t => t.ToString());
-
-			cbIntegratedSec.Items.Clear();
-			foreach(var sec in integSec)
+			var integSec = new Dictionary<int, string>
 			{
-				cbIntegratedSec.Items.Add(sec.Value);
-			}
+				{ 0, "false" },
+				{ 1, "true" }
+			}.ToList();
+
+			cbIntegratedSec.DataSource = integSec;
+			cbIntegratedSec.ValueMember = "Key";
+			cbIntegratedSec.DisplayMember = "Value";
 			
-			cbIntegratedSec.SelectedIndex = IntegratedSecurity < cbIntegratedSec.Items.Count ? IntegratedSecurity : 0;
+			cbIntegratedSec.SelectedValue = IntegratedSecurity ? 1 : 0;
 		}
 	}
 }

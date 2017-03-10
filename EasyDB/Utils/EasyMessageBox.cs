@@ -20,9 +20,9 @@ namespace EasyDB.Utils
 			return MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
-		public static DialogResult MessageWithAction(string title, string message, Action action, string actionButtonText, string okButtonText)
+		public static DialogResult MessageWithActions(string title, string message, string okButtonText, params ActionButton[] actionButtons)
 		{
-			using(var form = new MessageForm(title, message, action, actionButtonText, okButtonText))
+			using(var form = new MessageForm(title, message, okButtonText, actionButtons))
 			{
 				return form.ShowDialog();
 			}

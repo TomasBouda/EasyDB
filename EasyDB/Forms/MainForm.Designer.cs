@@ -35,10 +35,9 @@
 			this.gridColumns = new System.Windows.Forms.DataGridView();
 			this.tabSql = new System.Windows.Forms.TabPage();
 			this.txtSqlScript = new FastColoredTextBoxNS.FastColoredTextBox();
-			this.tabData = new System.Windows.Forms.TabPage();
-			this.gridData = new System.Windows.Forms.DataGridView();
 			this.listDbObjects = new System.Windows.Forms.ListView();
 			this.cmsListObj = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.backupScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.copyScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.imageList = new System.Windows.Forms.ImageList(this.components);
 			this.txtSearchQuery = new System.Windows.Forms.TextBox();
@@ -50,8 +49,14 @@
 			this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.bw = new System.ComponentModel.BackgroundWorker();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.backupScriptToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.sqlExecutorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.uppercaseSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.lowercaseSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setConnectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,14 +68,12 @@
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.btnSearch = new System.Windows.Forms.Button();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-			this.backupScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.tabControl.SuspendLayout();
 			this.tabCols.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.gridColumns)).BeginInit();
 			this.tabSql.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtSqlScript)).BeginInit();
-			this.tabData.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.gridData)).BeginInit();
 			this.cmsListObj.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
@@ -86,12 +89,11 @@
 			// 
 			this.tabControl.Controls.Add(this.tabCols);
 			this.tabControl.Controls.Add(this.tabSql);
-			this.tabControl.Controls.Add(this.tabData);
 			this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl.Location = new System.Drawing.Point(0, 0);
 			this.tabControl.Name = "tabControl";
 			this.tabControl.SelectedIndex = 0;
-			this.tabControl.Size = new System.Drawing.Size(603, 374);
+			this.tabControl.Size = new System.Drawing.Size(625, 349);
 			this.tabControl.TabIndex = 0;
 			this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
 			// 
@@ -101,7 +103,7 @@
 			this.tabCols.Location = new System.Drawing.Point(4, 22);
 			this.tabCols.Name = "tabCols";
 			this.tabCols.Padding = new System.Windows.Forms.Padding(3);
-			this.tabCols.Size = new System.Drawing.Size(595, 348);
+			this.tabCols.Size = new System.Drawing.Size(617, 323);
 			this.tabCols.TabIndex = 0;
 			this.tabCols.Text = "Columns";
 			this.tabCols.UseVisualStyleBackColor = true;
@@ -116,7 +118,7 @@
 			this.gridColumns.Location = new System.Drawing.Point(3, 3);
 			this.gridColumns.Name = "gridColumns";
 			this.gridColumns.ReadOnly = true;
-			this.gridColumns.Size = new System.Drawing.Size(589, 342);
+			this.gridColumns.Size = new System.Drawing.Size(611, 317);
 			this.gridColumns.TabIndex = 1;
 			// 
 			// tabSql
@@ -125,7 +127,7 @@
 			this.tabSql.Location = new System.Drawing.Point(4, 22);
 			this.tabSql.Name = "tabSql";
 			this.tabSql.Padding = new System.Windows.Forms.Padding(3);
-			this.tabSql.Size = new System.Drawing.Size(595, 348);
+			this.tabSql.Size = new System.Drawing.Size(617, 323);
 			this.tabSql.TabIndex = 1;
 			this.tabSql.Text = "Sql";
 			this.tabSql.UseVisualStyleBackColor = true;
@@ -143,49 +145,24 @@
         '\"',
         '\'',
         '\''};
-			this.txtSqlScript.AutoScrollMinSize = new System.Drawing.Size(2, 17);
+			this.txtSqlScript.AutoScrollMinSize = new System.Drawing.Size(2, 18);
 			this.txtSqlScript.BackBrush = null;
-			this.txtSqlScript.CharHeight = 17;
-			this.txtSqlScript.CharWidth = 8;
+			this.txtSqlScript.CharHeight = 18;
+			this.txtSqlScript.CharWidth = 9;
 			this.txtSqlScript.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.txtSqlScript.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
 			this.txtSqlScript.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtSqlScript.Font = new System.Drawing.Font("Consolas", 11.25F);
+			this.txtSqlScript.Font = new System.Drawing.Font("Consolas", 12F);
 			this.txtSqlScript.IsReplaceMode = false;
 			this.txtSqlScript.Location = new System.Drawing.Point(3, 3);
 			this.txtSqlScript.Name = "txtSqlScript";
 			this.txtSqlScript.Paddings = new System.Windows.Forms.Padding(0);
 			this.txtSqlScript.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
 			this.txtSqlScript.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("txtSqlScript.ServiceColors")));
-			this.txtSqlScript.Size = new System.Drawing.Size(589, 342);
+			this.txtSqlScript.Size = new System.Drawing.Size(611, 317);
 			this.txtSqlScript.TabIndex = 0;
 			this.txtSqlScript.Zoom = 100;
 			this.txtSqlScript.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.txtSqlScript_TextChanged);
-			// 
-			// tabData
-			// 
-			this.tabData.Controls.Add(this.gridData);
-			this.tabData.Location = new System.Drawing.Point(4, 22);
-			this.tabData.Name = "tabData";
-			this.tabData.Padding = new System.Windows.Forms.Padding(3);
-			this.tabData.Size = new System.Drawing.Size(595, 348);
-			this.tabData.TabIndex = 2;
-			this.tabData.Text = "Data";
-			this.tabData.UseVisualStyleBackColor = true;
-			// 
-			// gridData
-			// 
-			this.gridData.AllowUserToAddRows = false;
-			this.gridData.AllowUserToDeleteRows = false;
-			this.gridData.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
-			this.gridData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.gridData.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.gridData.Location = new System.Drawing.Point(3, 3);
-			this.gridData.Name = "gridData";
-			this.gridData.ReadOnly = true;
-			this.gridData.Size = new System.Drawing.Size(589, 342);
-			this.gridData.TabIndex = 2;
-			this.gridData.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridData_MouseDown);
 			// 
 			// listDbObjects
 			// 
@@ -196,7 +173,7 @@
 			this.listDbObjects.Location = new System.Drawing.Point(0, 0);
 			this.listDbObjects.MultiSelect = false;
 			this.listDbObjects.Name = "listDbObjects";
-			this.listDbObjects.Size = new System.Drawing.Size(261, 374);
+			this.listDbObjects.Size = new System.Drawing.Size(239, 349);
 			this.listDbObjects.SmallImageList = this.imageList;
 			this.listDbObjects.TabIndex = 1;
 			this.listDbObjects.UseCompatibleStateImageBehavior = false;
@@ -210,12 +187,19 @@
             this.backupScriptToolStripMenuItem,
             this.copyScriptToolStripMenuItem});
 			this.cmsListObj.Name = "cmsListObj";
-			this.cmsListObj.Size = new System.Drawing.Size(153, 70);
+			this.cmsListObj.Size = new System.Drawing.Size(146, 48);
+			// 
+			// backupScriptToolStripMenuItem
+			// 
+			this.backupScriptToolStripMenuItem.Name = "backupScriptToolStripMenuItem";
+			this.backupScriptToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+			this.backupScriptToolStripMenuItem.Text = "Backup script";
+			this.backupScriptToolStripMenuItem.Click += new System.EventHandler(this.backupScriptToolStripMenuItem_Click);
 			// 
 			// copyScriptToolStripMenuItem
 			// 
 			this.copyScriptToolStripMenuItem.Name = "copyScriptToolStripMenuItem";
-			this.copyScriptToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.copyScriptToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
 			this.copyScriptToolStripMenuItem.Text = "Copy script";
 			this.copyScriptToolStripMenuItem.Click += new System.EventHandler(this.copyScriptToolStripMenuItem_Click);
 			// 
@@ -291,6 +275,8 @@
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.viewToolStripMenuItem,
             this.editToolStripMenuItem,
             this.optionsToolStripMenuItem,
             this.helpToolStripMenuItem});
@@ -300,10 +286,54 @@
 			this.menuStrip1.TabIndex = 2;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
+			// fileToolStripMenuItem
+			// 
+			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveAsToolStripMenuItem,
+            this.backupScriptToolStripMenuItem1});
+			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+			this.fileToolStripMenuItem.Text = "File";
+			// 
+			// saveAsToolStripMenuItem
+			// 
+			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+			this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+			this.saveAsToolStripMenuItem.Text = "Save As...";
+			this.saveAsToolStripMenuItem.Visible = false;
+			// 
+			// backupScriptToolStripMenuItem1
+			// 
+			this.backupScriptToolStripMenuItem1.Name = "backupScriptToolStripMenuItem1";
+			this.backupScriptToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.B)));
+			this.backupScriptToolStripMenuItem1.Size = new System.Drawing.Size(218, 22);
+			this.backupScriptToolStripMenuItem1.Text = "Backup script";
+			this.backupScriptToolStripMenuItem1.Click += new System.EventHandler(this.backupScriptToolStripMenuItem1_Click);
+			// 
+			// viewToolStripMenuItem
+			// 
+			this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sqlExecutorToolStripMenuItem});
+			this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+			this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+			this.viewToolStripMenuItem.Text = "View";
+			// 
+			// sqlExecutorToolStripMenuItem
+			// 
+			this.sqlExecutorToolStripMenuItem.Name = "sqlExecutorToolStripMenuItem";
+			this.sqlExecutorToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.X)));
+			this.sqlExecutorToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+			this.sqlExecutorToolStripMenuItem.Text = "Sql executor";
+			this.sqlExecutorToolStripMenuItem.Click += new System.EventHandler(this.sqlExecutorToolStripMenuItem_Click);
+			// 
 			// editToolStripMenuItem
 			// 
 			this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.uppercaseSQLToolStripMenuItem});
+            this.uppercaseSQLToolStripMenuItem,
+            this.lowercaseSQLToolStripMenuItem});
 			this.editToolStripMenuItem.Name = "editToolStripMenuItem";
 			this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
 			this.editToolStripMenuItem.Text = "Edit";
@@ -311,9 +341,20 @@
 			// uppercaseSQLToolStripMenuItem
 			// 
 			this.uppercaseSQLToolStripMenuItem.Name = "uppercaseSQLToolStripMenuItem";
-			this.uppercaseSQLToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+			this.uppercaseSQLToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.U)));
+			this.uppercaseSQLToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
 			this.uppercaseSQLToolStripMenuItem.Text = "Uppercase SQL";
 			this.uppercaseSQLToolStripMenuItem.Click += new System.EventHandler(this.uppercaseSQLToolStripMenuItem_Click);
+			// 
+			// lowercaseSQLToolStripMenuItem
+			// 
+			this.lowercaseSQLToolStripMenuItem.Name = "lowercaseSQLToolStripMenuItem";
+			this.lowercaseSQLToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.L)));
+			this.lowercaseSQLToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+			this.lowercaseSQLToolStripMenuItem.Text = "Lowercase SQL";
+			this.lowercaseSQLToolStripMenuItem.Click += new System.EventHandler(this.lowercaseSQLToolStripMenuItem_Click);
 			// 
 			// optionsToolStripMenuItem
 			// 
@@ -327,14 +368,16 @@
 			// setConnectionToolStripMenuItem
 			// 
 			this.setConnectionToolStripMenuItem.Name = "setConnectionToolStripMenuItem";
-			this.setConnectionToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+			this.setConnectionToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
 			this.setConnectionToolStripMenuItem.Text = "Set connection";
 			this.setConnectionToolStripMenuItem.Click += new System.EventHandler(this.setConnectionToolStripMenuItem_Click);
 			// 
 			// clearCacheToolStripMenuItem
 			// 
 			this.clearCacheToolStripMenuItem.Name = "clearCacheToolStripMenuItem";
-			this.clearCacheToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+			this.clearCacheToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.R)));
+			this.clearCacheToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
 			this.clearCacheToolStripMenuItem.Text = "Clear cache";
 			this.clearCacheToolStripMenuItem.Click += new System.EventHandler(this.clearCacheToolStripMenuItem_Click);
 			// 
@@ -366,7 +409,7 @@
 			this.panel1.Controls.Add(this.panelCheckButtons);
 			this.panel1.Controls.Add(this.tableLayoutPanel2);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel1.Location = new System.Drawing.Point(0, 24);
+			this.panel1.Location = new System.Drawing.Point(0, 49);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(868, 57);
 			this.panel1.TabIndex = 3;
@@ -409,7 +452,7 @@
 			// splitContainer1
 			// 
 			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer1.Location = new System.Drawing.Point(0, 81);
+			this.splitContainer1.Location = new System.Drawing.Point(0, 106);
 			this.splitContainer1.Name = "splitContainer1";
 			// 
 			// splitContainer1.Panel1
@@ -421,16 +464,17 @@
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.tabControl);
 			this.splitContainer1.Panel2MinSize = 200;
-			this.splitContainer1.Size = new System.Drawing.Size(868, 374);
-			this.splitContainer1.SplitterDistance = 261;
+			this.splitContainer1.Size = new System.Drawing.Size(868, 349);
+			this.splitContainer1.SplitterDistance = 239;
 			this.splitContainer1.TabIndex = 4;
 			// 
-			// backupScriptToolStripMenuItem
+			// toolStrip1
 			// 
-			this.backupScriptToolStripMenuItem.Name = "backupScriptToolStripMenuItem";
-			this.backupScriptToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.backupScriptToolStripMenuItem.Text = "Backup script";
-			this.backupScriptToolStripMenuItem.Click += new System.EventHandler(this.backupScriptToolStripMenuItem_Click);
+			this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+			this.toolStrip1.Name = "toolStrip1";
+			this.toolStrip1.Size = new System.Drawing.Size(868, 25);
+			this.toolStrip1.TabIndex = 5;
+			this.toolStrip1.Text = "toolStrip1";
 			// 
 			// MainForm
 			// 
@@ -440,6 +484,7 @@
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.panel1);
+			this.Controls.Add(this.toolStrip1);
 			this.Controls.Add(this.menuStrip1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip1;
@@ -453,8 +498,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.gridColumns)).EndInit();
 			this.tabSql.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.txtSqlScript)).EndInit();
-			this.tabData.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.gridData)).EndInit();
 			this.cmsListObj.ResumeLayout(false);
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
@@ -501,12 +544,17 @@
 		private System.Windows.Forms.ListView listDbObjects;
 		private System.Windows.Forms.ImageList imageList;
 		private System.Windows.Forms.SplitContainer splitContainer1;
-		private System.Windows.Forms.TabPage tabData;
-		private System.Windows.Forms.DataGridView gridData;
 		private System.Windows.Forms.Panel panelCheckButtons;
 		private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem uppercaseSQLToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem backupScriptToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem lowercaseSQLToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem backupScriptToolStripMenuItem1;
+		private System.Windows.Forms.ToolStrip toolStrip1;
+		private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem sqlExecutorToolStripMenuItem;
 	}
 }
 

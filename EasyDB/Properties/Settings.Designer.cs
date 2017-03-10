@@ -73,10 +73,10 @@ namespace EasyDB.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int IntegratedSecurity {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IntegratedSecurity {
             get {
-                return ((int)(this["IntegratedSecurity"]));
+                return ((bool)(this["IntegratedSecurity"]));
             }
             set {
                 this["IntegratedSecurity"] = value;
