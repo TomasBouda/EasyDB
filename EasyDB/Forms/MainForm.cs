@@ -1,10 +1,4 @@
-﻿using Database.Lib;
-using Database.Lib.Data;
-using Database.Lib.DataProviders;
-using Database.Lib.DataProviders.ConnectionParams;
-using Database.Lib.Misc;
-using Database.Lib.Search;
-using EasyDB.Forms;
+﻿using EasyDB.Forms;
 using EasyDB.Properties;
 using EasyDB.Utils;
 using System;
@@ -13,19 +7,24 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using TomLabs.Database.Data;
+using TomLabs.Database.DataProviders;
+using TomLabs.Database.DataProviders.ConnectionParams;
+using TomLabs.Database.Misc;
+using TomLabs.Database.Search;
+using TomLabs.WinForms.Utils.Controls;
+using TomLabs.WinForms.Utils.Forms;
+using TomLabs.WinForms.Utils.SyntaxHiglithing;
 
 namespace EasyDB
 {
 	public partial class MainForm : Form
 	{
 		public DataProvider DataProvider { get; set; } = new DataProvider();
+		public SqlSyntax Syntax { get; set; } = new SqlSyntax();
 		IDbObject _selectedObject;
 
 		private string _query = "";
@@ -153,10 +152,6 @@ namespace EasyDB
 				CheckButtons.Add(checkButton);
 				panelCheckButtons.Controls.Add(checkButton);
 			}
-
-			//chListDbObjects.DataSource = new BindingSource(enums, null);
-			//chListDbObjects.DisplayMember = "Value";
-			//chListDbObjects.ValueMember = "Key";
 		}
 
 		private void ChangeSqlScriptCase(bool upper = true)
@@ -208,7 +203,7 @@ namespace EasyDB
 
 		private SqlExForm ShowSqlExecutor(string script = "")
 		{
-			var sqlEx = new SqlExForm(DataProvider, script);
+			var sqlEx = new SqlExForm(DataProvider, Syntax, script);
 			sqlEx.Show();
 
 			return sqlEx;
@@ -245,6 +240,8 @@ namespace EasyDB
 		private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			var results = e.Result as SearchResults;
+
+			if (results == null) return;
 
 			if (results.Error)
 			{
@@ -310,8 +307,8 @@ namespace EasyDB
 
 		private void txtSqlScript_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
 		{
-			e.ChangedRange.SetSyntaxSql();
-			e.ChangedRange.HighlightText(txtSearchQuery.Text);
+			e.ChangedRange.SetSyntax(Syntax);
+			e.ChangedRange.HighlightText(txtSearchQuery.Text, Syntax);
 		}
 
 

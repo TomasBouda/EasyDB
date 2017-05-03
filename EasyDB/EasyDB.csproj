@@ -36,8 +36,8 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FastColoredTextBox">
-      <HintPath>..\..\..\..\..\Data\GIT_PRIVATE\LSBuddy\LSBuddy\packages\FCTB.2.16.11.0\lib\FastColoredTextBox.dll</HintPath>
+    <Reference Include="FastColoredTextBox, Version=2.16.21.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b, processorArchitecture=MSIL">
+      <HintPath>..\packages\FCTB.2.16.21.0\lib\FastColoredTextBox.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -59,18 +59,11 @@
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\CheckButtonData.cs" />
-    <Compile Include="Forms\ActionButton.cs" />
     <Compile Include="Forms\ConnectionDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\ConnectionDialog.Designer.cs">
       <DependentUpon>ConnectionDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\MessageForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MessageForm.Designer.cs">
-      <DependentUpon>MessageForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SqlExForm.cs">
       <SubType>Form</SubType>
@@ -78,7 +71,6 @@
     <Compile Include="Forms\SqlExForm.Designer.cs">
       <DependentUpon>SqlExForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utils\EasyMessageBox.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,7 +80,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\FileHelper.cs" />
-    <Compile Include="Utils\Syntax.cs" />
     <EmbeddedResource Include="Forms\AboutDialog.resx">
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -97,9 +88,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MessageForm.resx">
-      <DependentUpon>MessageForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SqlExForm.resx">
       <DependentUpon>SqlExForm.cs</DependentUpon>
@@ -114,6 +102,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -128,9 +117,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Data\GIT_PRIVATE\DatabaseLib\DatabaseLib\Database.Lib.csproj">
-      <Project>{27a17655-b321-4a86-86b2-2b3f2c75bba6}</Project>
-      <Name>Database.Lib</Name>
+    <ProjectReference Include="..\..\TomLabs\TomLabs\TomLabs.Database\TomLabs.Database.csproj">
+      <Project>{5a6c5abf-f5f9-4215-8a63-320cb6c7b909}</Project>
+      <Name>TomLabs.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TomLabs\TomLabs\TomLabs.WinForms.Utils\TomLabs.WinForms.Utils.csproj">
+      <Project>{e0573d49-7afe-4f5d-9555-a191db383a74}</Project>
+      <Name>TomLabs.WinForms.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,14 +1,8 @@
-﻿using Database.Lib.Search;
-using EasyDB.Utils;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using TomLabs.Database.Search;
+using TomLabs.WinForms.Utils.SyntaxHiglithing;
 
 namespace EasyDB.Forms
 {
@@ -28,13 +22,16 @@ namespace EasyDB.Forms
 			}
 		}
 
+		public SqlSyntax Syntax { get; set; }
+
 		public DataProvider DataProvider { get; private set; }
 
-		public SqlExForm(DataProvider dp, string script = "")
+		public SqlExForm(DataProvider dp, SqlSyntax syntax, string script = "")
 		{
-			InitializeComponent();
-
 			DataProvider = dp;
+			Syntax = syntax;
+
+			InitializeComponent();
 			txtSqlScript.Text = script;
 		}
 
@@ -50,7 +47,7 @@ namespace EasyDB.Forms
 
 		private void txtSqlScript_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
 		{
-			e.ChangedRange.SetSyntaxSql();
+			e.ChangedRange.SetSyntax(Syntax);
 		}
 
 		private void toolStripButton1_Click(object sender, EventArgs e)

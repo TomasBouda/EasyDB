@@ -91,7 +91,7 @@
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
 			this.splitContainer1.Size = new System.Drawing.Size(579, 310);
-			this.splitContainer1.SplitterDistance = 234;
+			this.splitContainer1.SplitterDistance = 100;
 			this.splitContainer1.TabIndex = 1;
 			// 
 			// txtSqlScript
@@ -121,7 +121,7 @@
 			this.txtSqlScript.Paddings = new System.Windows.Forms.Padding(0);
 			this.txtSqlScript.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
 			this.txtSqlScript.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("txtSqlScript.ServiceColors")));
-			this.txtSqlScript.Size = new System.Drawing.Size(579, 234);
+			this.txtSqlScript.Size = new System.Drawing.Size(579, 100);
 			this.txtSqlScript.TabIndex = 1;
 			this.txtSqlScript.Zoom = 100;
 			this.txtSqlScript.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.txtSqlScript_TextChanged);
@@ -134,7 +134,7 @@
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(579, 72);
+			this.tabControl1.Size = new System.Drawing.Size(579, 206);
 			this.tabControl1.TabIndex = 2;
 			// 
 			// tabPage1
@@ -143,7 +143,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(571, 46);
+			this.tabPage1.Size = new System.Drawing.Size(571, 180);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "tabPage1";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -154,7 +154,7 @@
 			this.gridView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gridView.Location = new System.Drawing.Point(3, 3);
 			this.gridView.Name = "gridView";
-			this.gridView.Size = new System.Drawing.Size(565, 40);
+			this.gridView.Size = new System.Drawing.Size(565, 174);
 			this.gridView.TabIndex = 0;
 			// 
 			// tabPage2
@@ -163,7 +163,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(571, 51);
+			this.tabPage2.Size = new System.Drawing.Size(571, 46);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "tabPage2";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -195,7 +195,7 @@
 			this.txtResult.Paddings = new System.Windows.Forms.Padding(0);
 			this.txtResult.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
 			this.txtResult.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("txtResult.ServiceColors")));
-			this.txtResult.Size = new System.Drawing.Size(565, 45);
+			this.txtResult.Size = new System.Drawing.Size(565, 40);
 			this.txtResult.TabIndex = 1;
 			this.txtResult.Zoom = 100;
 			// 
@@ -221,7 +221,7 @@
 			// 
 			this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
 			this.executeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-			this.executeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.executeToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
 			this.executeToolStripMenuItem.Text = "Execute";
 			this.executeToolStripMenuItem.Click += new System.EventHandler(this.executeToolStripMenuItem_Click);
 			// 
