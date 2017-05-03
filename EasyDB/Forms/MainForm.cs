@@ -10,14 +10,14 @@ using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using TomLabs.Database.Data;
-using TomLabs.Database.DataProviders;
-using TomLabs.Database.DataProviders.ConnectionParams;
-using TomLabs.Database.Misc;
-using TomLabs.Database.Search;
-using TomLabs.WinForms.Utils.Controls;
-using TomLabs.WinForms.Utils.Forms;
-using TomLabs.WinForms.Utils.SyntaxHiglithing;
+using TomLabs.OpenSource.Database.Data;
+using TomLabs.OpenSource.Database.DataProviders;
+using TomLabs.OpenSource.Database.DataProviders.ConnectionParams;
+using TomLabs.OpenSource.Database.Misc;
+using TomLabs.OpenSource.Database.Search;
+using TomLabs.OpenSource.WinForms.Utils.Controls;
+using TomLabs.OpenSource.WinForms.Utils.Forms;
+using TomLabs.OpenSource.WinForms.Utils.SyntaxHiglithing;
 
 namespace EasyDB
 {

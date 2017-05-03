@@ -117,19 +117,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\TomLabs\TomLabs\TomLabs.Database\TomLabs.Database.csproj">
-      <Project>{5a6c5abf-f5f9-4215-8a63-320cb6c7b909}</Project>
-      <Name>TomLabs.Database</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\TomLabs\TomLabs\TomLabs.WinForms.Utils\TomLabs.WinForms.Utils.csproj">
-      <Project>{e0573d49-7afe-4f5d-9555-a191db383a74}</Project>
-      <Name>TomLabs.WinForms.Utils</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="icon.ico" />
     <None Include="search-icon.png" />
     <None Include="loading.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\TomLabsOS\TomLabs.OpenSource.Database\TomLabs.OpenSource.Database.csproj">
+      <Project>{19f217c6-bb70-4f5c-9de1-63d590fb281f}</Project>
+      <Name>TomLabs.OpenSource.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TomLabsOS\TomLabs.OpenSource.WinForms.Utils\TomLabs.OpenSource.WinForms.Utils.csproj">
+      <Project>{e0573d49-7afe-4f5d-9555-a191db383a74}</Project>
+      <Name>TomLabs.OpenSource.WinForms.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Windows.Forms;
-using TomLabs.Database.Search;
-using TomLabs.WinForms.Utils.SyntaxHiglithing;
+using TomLabs.OpenSource.Database.Search;
+using TomLabs.OpenSource.WinForms.Utils.SyntaxHiglithing;
 
 namespace EasyDB.Forms
 {
