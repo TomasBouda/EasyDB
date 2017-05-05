@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Windows.Forms;
-using TomLabs.OpenSource.Database.Search;
+using TomLabs.OpenSource.SQuirreL.Search;
 using TomLabs.OpenSource.WinForms.Utils.SyntaxHiglithing;
 
 namespace EasyDB.Forms
@@ -9,6 +9,7 @@ namespace EasyDB.Forms
 	public partial class SqlExForm : Form
 	{
 		private string _script;
+
 		public string Script
 		{
 			get

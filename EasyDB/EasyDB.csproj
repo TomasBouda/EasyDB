@@ -122,9 +122,9 @@
     <None Include="loading.gif" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\TomLabsOS\TomLabs.OpenSource.Database\TomLabs.OpenSource.Database.csproj">
-      <Project>{19f217c6-bb70-4f5c-9de1-63d590fb281f}</Project>
-      <Name>TomLabs.OpenSource.Database</Name>
+    <ProjectReference Include="..\..\SQuirreL\SQuirreL\TomLabs.OpenSource.SQuirreL.csproj">
+      <Project>{27A17655-B321-4A86-86B2-2B3F2C75BBA6}</Project>
+      <Name>TomLabs.OpenSource.SQuirreL</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\TomLabsOS\TomLabs.OpenSource.WinForms.Utils\TomLabs.OpenSource.WinForms.Utils.csproj">
       <Project>{e0573d49-7afe-4f5d-9555-a191db383a74}</Project>
